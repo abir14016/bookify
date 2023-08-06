@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import logo from "../../src/assets/images/bookify.png";
 
 const Navbar = () => {
+  const user: boolean = false;
   const menuItems = (
     <React.Fragment>
       <li>
@@ -9,9 +11,6 @@ const Navbar = () => {
       </li>
       <li>
         <Link to="/signup">Signup</Link>
-      </li>
-      <li>
-        <Link to="/login">Login</Link>
       </li>
     </React.Fragment>
   );
@@ -42,13 +41,24 @@ const Navbar = () => {
             {menuItems}
           </ul>
         </div>
-        <a className="btn btn-ghost normal-case text-xl">daisyUI</a>
+        <Link to="/" className="flex items-center justify-center btn btn-ghost">
+          <span className="normal-case text-3xl font-bold font-serif ">
+            Bookify
+          </span>
+          <img className="w-[30px]" src={logo} alt="logo" />
+        </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{menuItems}</ul>
       </div>
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        {!user ? (
+          <Link to="/signin" className="btn btn-outline btn-primary">
+            Sign In
+          </Link>
+        ) : (
+          <a className="btn btn-outline btn-primary">Logout</a>
+        )}
       </div>
     </div>
   );
