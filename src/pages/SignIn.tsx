@@ -1,22 +1,21 @@
-import signupImage from "../../src/assets/images/regester-2.png";
+import loginImage from "../../src/assets/images/login.webp";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Link } from "react-router-dom";
 
-type ISignUpInput = {
-  name: string;
+type ISignInInput = {
   email: string;
   password: string;
 };
 
-const SignUp = () => {
+const SignIn = () => {
   const {
     register,
     formState: { errors },
     handleSubmit,
-  } = useForm<ISignUpInput>();
+  } = useForm<ISignInInput>();
 
   // submit button
-  const onSubmit: SubmitHandler<ISignUpInput> = async (data) => {
+  const onSubmit: SubmitHandler<ISignInInput> = async (data) => {
     console.log(data);
   };
   return (
@@ -24,32 +23,8 @@ const SignUp = () => {
       <div>
         <div className="card w-96 bg-base-100 shadow-xl border-2">
           <div className="card-body">
-            <h2 className="text-center text-3xl font-bold">Sign Up</h2>
+            <h2 className="text-center text-3xl font-bold">Sign In</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
-              {/* name field */}
-              <div className="form-control w-full max-w-xs">
-                <label className="label">
-                  <span className="label-text">Name</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="Your Name"
-                  className="input input-bordered w-full max-w-xs"
-                  {...register("name", {
-                    required: {
-                      value: true,
-                      message: "Name is required",
-                    },
-                  })}
-                />
-                {errors.name?.type === "required" && (
-                  <p className="text-sm text-warning" role="alert">
-                    {errors?.name?.message}
-                  </p>
-                )}
-              </div>
-              {/* name field */}
-
               {/* email field */}
               <div className="form-control w-full max-w-xs">
                 <label className="label">
@@ -117,24 +92,24 @@ const SignUp = () => {
               <input
                 className="btn btn-sm btn-primary w-full max-w-xs mt-4"
                 type="submit"
-                value="SIGNUP"
+                value="SIGN IN"
               />
             </form>
 
             <p className="text-xs text-end">
-              already have an account?{" "}
-              <Link className="link link-hover text-blue-500" to="/signin">
-                please sign in
+              new to bookify?{" "}
+              <Link className="link link-hover text-blue-500" to="/signup">
+                create account
               </Link>
             </p>
           </div>
         </div>
       </div>
       <div>
-        <img src={signupImage} alt="loginImage" />
+        <img src={loginImage} alt="loginImage" />
       </div>
     </div>
   );
 };
 
-export default SignUp;
+export default SignIn;
