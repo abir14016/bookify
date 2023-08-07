@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../../src/assets/images/bookify.png";
+import wishlist from "../../src/assets/images/wishlist.png";
 
 const Navbar = () => {
   const user: boolean = false;
@@ -51,14 +52,49 @@ const Navbar = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{menuItems}</ul>
       </div>
+
       <div className="navbar-end">
         {!user ? (
-          <Link to="/signin" className="btn btn-outline btn-primary">
+          <Link to="/signin" className="btn btn-sm btn-outline btn-primary">
             Sign In
           </Link>
         ) : (
-          <a className="btn btn-outline btn-primary">Logout</a>
+          <a className="btn btn-sm btn-outline btn-primary">Logout</a>
         )}
+
+        <label className="btn btn-ghost btn-circle">
+          <div className="indicator">
+            <img className="w-[40px]" src={wishlist} alt="wishlist" />
+            <span className="badge badge-sm indicator-item">8</span>
+          </div>
+        </label>
+
+        <div className="dropdown dropdown-end">
+          <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+            <div className="avatar online placeholder">
+              <div className="bg-neutral-focus text-neutral-content rounded-full w-10">
+                <span className="text-xl">JO</span>
+              </div>
+            </div>
+          </label>
+          <ul
+            tabIndex={0}
+            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+          >
+            <li>
+              <a className="justify-between">
+                Profile
+                <span className="badge">New</span>
+              </a>
+            </li>
+            <li>
+              <a>Settings</a>
+            </li>
+            <li>
+              <a>Logout</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   );
