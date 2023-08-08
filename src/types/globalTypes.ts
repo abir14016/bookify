@@ -1,3 +1,11 @@
+type IOwner = {
+  name: string;
+  email: string;
+  updatedAt: string;
+  createdAt: string;
+  _id: string;
+};
+
 export type IBook = {
   _id: string;
   title: string;
@@ -5,6 +13,6 @@ export type IBook = {
   genre: string;
   imageURL?: string;
   publicationYear: number;
-  owner: string | Record<string, unknown>;
+  owner: IOwner;
   reviews?: [Record<string, unknown>];
 };

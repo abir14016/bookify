@@ -6,10 +6,10 @@ interface IProps {
 }
 
 const BookCard = ({ book }: IProps) => {
-  const { title, author, genre, imageURL, publicationYear } = book;
+  const { _id, title, author, genre, imageURL, publicationYear } = book;
   return (
     <Link
-      to="/:id"
+      to={`/books/${_id}`}
       className="card bg-base-100 shadow-xl flex flex-col border border-gray-200 cursor-pointer"
     >
       <figure>
