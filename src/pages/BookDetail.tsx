@@ -1,19 +1,24 @@
 import { useParams } from "react-router-dom";
 import { useGetSingleBookQuery } from "../redux/api/apiSlice";
 import { IBook } from "../types/globalTypes";
+import BookDetailSkeleton from "../components/BookDetailSkeleton";
 
 const BookDetail = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetSingleBookQuery(id);
 
-  let book: IBook | undefined;
-  if (!isLoading) {
-    book = data.data;
-    console.log(book);
+  if (isLoading) {
+    return (
+      <div className="flex justify-center my-5 md:my-10 lg:my-16">
+        <BookDetailSkeleton />;
+      </div>
+    ); // Render loading component
   }
+
+  const book: IBook = data.data;
   return (
     <div className="flex justify-center my-5 md:my-10 lg:my-16">
-      <div className="card card-side bg-base-100 shadow-xl border-2 w-1/2">
+      <div className="card card-side bg-base-100 shadow-xl border border-gray-200 w-1/2">
         <figure>
           <img
             style={{ aspectRatio: "300 / 350" }}
