@@ -11,7 +11,7 @@ const Navbar = () => {
         <Link to="/">Home</Link>
       </li>
       <li>
-        <Link to="/signup">Signup</Link>
+        <Link to="/books">All Books</Link>
       </li>
     </React.Fragment>
   );
