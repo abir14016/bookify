@@ -1,6 +1,6 @@
 import loginImage from "../../src/assets/images/login.webp";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSignInUserMutation } from "../redux/api/apiSlice";
 import swal from "sweetalert";
 import { useEffect } from "react";
@@ -14,6 +14,10 @@ type ISignInInput = {
 
 const SignIn = () => {
   const dispatch = useAppDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const from = location.state?.from?.pathname || "/";
   const {
     register,
     formState: { errors },
@@ -34,9 +38,10 @@ const SignIn = () => {
     if (isSuccess && data) {
       dispatch(setAccessToken(data?.data?.accessToken));
       localStorage.setItem("accessToken", data?.data?.accessToken);
+      navigate(from, { replace: true });
       swal("Congratulations!", "User signed in Successfully!", "success");
     }
-  }, [isError, isSuccess, data, dispatch]);
+  }, [isError, isSuccess, data, dispatch, navigate, from]);
   return (
     <div className="md:flex justify-evenly items-center px-2 md:px-8 lg:px-12 h-screen">
       <div>

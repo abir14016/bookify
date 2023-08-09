@@ -26,6 +26,14 @@ const Navbar = () => {
       <li>
         <Link to="/books">All Books</Link>
       </li>
+      {decoded?.userEmail && (
+        <li>
+          <Link to="/add-new-book">Add New Book</Link>
+        </li>
+      )}
+      <li>
+        <Link to="/add-new-book">Add New Book</Link>
+      </li>
     </React.Fragment>
   );
   const handleLogout = () => {
@@ -86,39 +94,43 @@ const Navbar = () => {
           </a>
         )}
 
-        <label className="btn btn-ghost btn-circle">
-          <div className="indicator">
-            <img className="w-[40px]" src={wishlist} alt="wishlist" />
-            <span className="badge badge-sm indicator-item">8</span>
-          </div>
-        </label>
-
-        <div className="dropdown dropdown-end">
-          <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-            <div className="avatar online placeholder">
-              <div className="bg-neutral-focus text-neutral-content rounded-full w-10">
-                <span className="text-xl">{avatarText}</span>
-              </div>
+        {decoded?.userEmail && (
+          <label className="btn btn-ghost btn-circle">
+            <div className="indicator">
+              <img className="w-[40px]" src={wishlist} alt="wishlist" />
+              <span className="badge badge-sm indicator-item">8</span>
             </div>
           </label>
-          <ul
-            tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
-          >
-            <li>
-              <a className="justify-between">
-                Profile
-                <span className="badge">New</span>
-              </a>
-            </li>
-            <li>
-              <a>Settings</a>
-            </li>
-            <li>
-              <a onClick={handleLogout}>Logout</a>
-            </li>
-          </ul>
-        </div>
+        )}
+
+        {decoded?.userEmail && (
+          <div className="dropdown dropdown-end">
+            <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+              <div className="avatar online placeholder">
+                <div className="bg-neutral-focus text-neutral-content rounded-full w-10">
+                  <span className="text-xl">{avatarText}</span>
+                </div>
+              </div>
+            </label>
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            >
+              <li>
+                <a className="justify-between">
+                  Profile
+                  <span className="badge">New</span>
+                </a>
+              </li>
+              <li>
+                <a>Settings</a>
+              </li>
+              <li>
+                <a onClick={handleLogout}>Logout</a>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
