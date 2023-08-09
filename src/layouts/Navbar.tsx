@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import logo from "../../src/assets/images/bookify.png";
 import wishlist from "../../src/assets/images/wishlist.png";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import jwt_decode from "jwt-decode";
 import { clearAccessToken } from "../redux/features/auth/authSlice";
+import { parseAccessToken } from "../utils/utils";
 
 type IDecoded = {
   userEmail: string;
@@ -15,7 +15,7 @@ const Navbar = () => {
   const { accessToken } = useAppSelector((state) => state.auth);
   let decoded: IDecoded | null = null;
   if (accessToken) {
-    decoded = jwt_decode(accessToken);
+    decoded = parseAccessToken(accessToken) as IDecoded;
   }
   const avatarText = decoded?.name[0].toUpperCase();
   const menuItems = (

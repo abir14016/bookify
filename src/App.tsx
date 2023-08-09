@@ -9,7 +9,6 @@ function App() {
   // Set the access token in Redux store
   if (accessToken) {
     dispatch(setAccessToken(accessToken));
-    console.log(accessToken);
   }
   return (
     <div>
