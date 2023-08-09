@@ -2,14 +2,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../../src/assets/images/bookify.png";
 import wishlist from "../../src/assets/images/wishlist.png";
-import { useAppSelector } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import jwt_decode from "jwt-decode";
+import { clearAccessToken } from "../redux/features/auth/authSlice";
 
 type IDecoded = {
   userEmail: string;
   name: string;
 };
 const Navbar = () => {
+  const dispatch = useAppDispatch();
   const { accessToken } = useAppSelector((state) => state.auth);
   let decoded: IDecoded | null = null;
   if (accessToken) {
@@ -26,6 +28,12 @@ const Navbar = () => {
       </li>
     </React.Fragment>
   );
+  const handleLogout = () => {
+    dispatch(clearAccessToken());
+
+    // Clear the access token stored in localStorage
+    localStorage.removeItem("accessToken");
+  };
   return (
     <div className="navbar bg-neutral sticky top-0 border-b-2 border-secondary z-30 backdrop-blur bg-transparent shadow-lg">
       <div className="navbar-start">
@@ -70,7 +78,12 @@ const Navbar = () => {
             Sign In
           </Link>
         ) : (
-          <a className="btn btn-sm btn-outline btn-primary">Logout</a>
+          <a
+            onClick={handleLogout}
+            className="btn btn-sm btn-outline btn-primary"
+          >
+            Logout
+          </a>
         )}
 
         <label className="btn btn-ghost btn-circle">
@@ -102,7 +115,7 @@ const Navbar = () => {
               <a>Settings</a>
             </li>
             <li>
-              <a>Logout</a>
+              <a onClick={handleLogout}>Logout</a>
             </li>
           </ul>
         </div>
