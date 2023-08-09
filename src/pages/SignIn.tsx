@@ -1,6 +1,11 @@
 import loginImage from "../../src/assets/images/login.webp";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { useSignInUserMutation } from "../redux/api/apiSlice";
+import swal from "sweetalert";
+import { useEffect } from "react";
+import { setAccessToken } from "../redux/features/auth/authSlice";
+import { useAppDispatch } from "../redux/hooks";
 
 type ISignInInput = {
   email: string;
@@ -8,16 +13,29 @@ type ISignInInput = {
 };
 
 const SignIn = () => {
+  const dispatch = useAppDispatch();
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm<ISignInInput>();
 
+  const [signInUser, { isLoading, isError, isSuccess, data }] =
+    useSignInUserMutation();
   // submit button
   const onSubmit: SubmitHandler<ISignInInput> = async (data) => {
-    console.log(data);
+    signInUser(data);
   };
+
+  useEffect(() => {
+    if (isError) {
+      swal("Oops!", "Failed to sign in!", "error");
+    }
+    if (isSuccess && data) {
+      dispatch(setAccessToken(data?.data?.accessToken));
+      swal("Congratulations!", "User signed in Successfully!", "success");
+    }
+  }, [isError, isSuccess, data, dispatch]);
   return (
     <div className="md:flex justify-evenly items-center px-2 md:px-8 lg:px-12 h-screen">
       <div>
@@ -89,11 +107,17 @@ const SignIn = () => {
               </div>
               {/* password field */}
 
-              <input
-                className="btn btn-sm btn-primary w-full max-w-xs mt-4"
-                type="submit"
-                value="SIGN IN"
-              />
+              {!isLoading ? (
+                <input
+                  className="btn btn-sm btn-primary w-full max-w-xs mt-10"
+                  type="submit"
+                  value="Sign in"
+                />
+              ) : (
+                <button className="btn btn-sm btn-primary w-full max-w-xs mt-10">
+                  <span className="loading loading-spinner text-warning font-bold loading-sm"></span>
+                </button>
+              )}
             </form>
 
             <p className="text-xs text-end">

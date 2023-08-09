@@ -20,6 +20,13 @@ export const api = createApi({
         body: userData,
       }),
     }),
+    signInUser: builder.mutation({
+      query: (userData) => ({
+        url: "/auth/signin",
+        method: "POST",
+        body: userData,
+      }),
+    }),
   }),
 });
 
@@ -28,4 +35,5 @@ export const {
   useGetSingleBookQuery,
   useGetAllBooksQuery,
   useSignUpUserMutation,
+  useSignInUserMutation,
 } = api;

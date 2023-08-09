@@ -2,9 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../../src/assets/images/bookify.png";
 import wishlist from "../../src/assets/images/wishlist.png";
+import { useAppSelector } from "../redux/hooks";
 
 const Navbar = () => {
-  const user: boolean = false;
+  const { accessToken } = useAppSelector((state) => state.auth);
   const menuItems = (
     <React.Fragment>
       <li>
@@ -54,7 +55,7 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-end">
-        {!user ? (
+        {!accessToken ? (
           <Link to="/signin" className="btn btn-sm btn-outline btn-primary">
             Sign In
           </Link>

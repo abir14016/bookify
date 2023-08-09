@@ -22,7 +22,7 @@ const SignUp = () => {
     useSignUpUserMutation();
   // submit button
   const onSubmit: SubmitHandler<ISignUpInput> = async (data) => {
-    console.log(data);
+    console.log("form data", data);
     signUpUser(data);
   };
 
