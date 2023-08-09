@@ -1,6 +1,9 @@
 import signupImage from "../../src/assets/images/regester-2.png";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { useSignUpUserMutation } from "../redux/api/apiSlice";
+import swal from "sweetalert";
+import { useEffect } from "react";
 
 type ISignUpInput = {
   name: string;
@@ -15,10 +18,22 @@ const SignUp = () => {
     handleSubmit,
   } = useForm<ISignUpInput>();
 
+  const [signUpUser, { isLoading, isError, isSuccess }] =
+    useSignUpUserMutation();
   // submit button
   const onSubmit: SubmitHandler<ISignUpInput> = async (data) => {
     console.log(data);
+    signUpUser(data);
   };
+
+  useEffect(() => {
+    if (isError) {
+      swal("Oops!", "Failed to create User!", "error");
+    }
+    if (isSuccess) {
+      swal("Congratulations!", "User Created Successfully!", "success");
+    }
+  }, [isError, isSuccess]);
   return (
     <div className="md:flex justify-evenly items-center px-2 md:px-8 lg:px-12 h-screen">
       <div>
@@ -51,6 +66,7 @@ const SignUp = () => {
               {/* name field */}
 
               {/* email field */}
+
               <div className="form-control w-full max-w-xs">
                 <label className="label">
                   <span className="label-text">Email</span>
@@ -114,11 +130,17 @@ const SignUp = () => {
               </div>
               {/* password field */}
 
-              <input
-                className="btn btn-sm btn-primary w-full max-w-xs mt-4"
-                type="submit"
-                value="SIGNUP"
-              />
+              {!isLoading ? (
+                <input
+                  className="btn btn-sm btn-primary w-full max-w-xs mt-10"
+                  type="submit"
+                  value="SIGNUP"
+                />
+              ) : (
+                <button className="btn btn-sm btn-primary w-full max-w-xs mt-10">
+                  <span className="loading loading-spinner text-warning font-bold loading-sm"></span>
+                </button>
+              )}
             </form>
 
             <p className="text-xs text-end">
