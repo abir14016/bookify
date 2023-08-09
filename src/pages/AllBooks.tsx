@@ -5,9 +5,19 @@ import { useGetAllBooksQuery } from "../redux/api/apiSlice";
 import { IBook } from "../types/globalTypes";
 
 const AllBooks = () => {
-  const [showPlaceholder, setShowPlaceholder] = useState(true);
+  const [showGenrePlaceholder, setShowGenrePlaceholder] = useState(true);
+  const [showYearPlaceholder, setShowYearPlaceholder] = useState(true);
+
+  // State for search input
   const [searchText, setSearchText] = useState("");
-  const [selectedGenre, setSelectedGenre] = useState(""); // State for selected genre
+
+  // State for selected genre
+  const [selectedGenre, setSelectedGenre] = useState("");
+
+  // State for selected year
+  const [selectedYear, setSelectedYear] = useState("");
+
+  //data fetching by RTK query
   const { data, isLoading } = useGetAllBooksQuery(undefined);
   let books: IBook[] = [];
   if (!isLoading) {
@@ -16,6 +26,11 @@ const AllBooks = () => {
 
   // Retrieve unique genres from the book data
   const allGenres = [...new Set(books.map((book) => book.genre))];
+
+  // Retrieve unique years from the book data
+  const allPublicationYears = [
+    ...new Set(books.map((book) => book.publicationYear)),
+  ];
 
   // Handler for input change
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +42,11 @@ const AllBooks = () => {
     setSelectedGenre(event.target.value);
   };
 
-  // Filtering books based on the search text
+  // Handler for year selection
+  const handleYearSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedYear(event.target.value);
+  };
+
   // Filtering books based on the search text
   const searchFilteredBooks = books.filter(
     (book) =>
@@ -38,15 +57,21 @@ const AllBooks = () => {
 
   // Filtering books based on the selected genre
   const genreFilteredBooks = books.filter(
+    (book) => selectedGenre === "" || book.genre === selectedGenre
+  );
+
+  // Filtering books based on the selected year
+  const yearFilteredBooks = books.filter(
     (book) =>
-      selectedGenre === "" ||
-      book.genre.toLowerCase() === selectedGenre.toLowerCase()
+      selectedYear === "" || book.publicationYear.toString() === selectedYear
   );
 
   // Combining the results of search and genre filtering
   const combinedFilteredBooks = searchText
     ? searchFilteredBooks
-    : genreFilteredBooks;
+    : selectedGenre
+    ? genreFilteredBooks
+    : yearFilteredBooks;
   return (
     <div>
       <div className="px-2 md:px-8 lg:px-10 xl:px-12">
@@ -59,6 +84,7 @@ const AllBooks = () => {
 
         <div className="flex justify-between items-center">
           <div className="flex justify-start">
+            {/* filter by genre */}
             <div>
               <label className="label">
                 <span className="label-text-alt">Filter by genre</span>
@@ -67,10 +93,12 @@ const AllBooks = () => {
                 value={selectedGenre}
                 onChange={handleGenreSelect}
                 className="select select-bordered select-primary select-sm"
-                onFocus={() => setShowPlaceholder(false)}
-                onBlur={() => setShowPlaceholder(!selectedGenre)}
+                onFocus={() => setShowGenrePlaceholder(false)}
+                onBlur={() => setShowGenrePlaceholder(!selectedGenre)}
               >
-                {showPlaceholder && <option value="">Select a genre</option>}
+                {showGenrePlaceholder && (
+                  <option value="">Select a genre</option>
+                )}
                 <option value="">All</option>
                 {allGenres.map((genre) => (
                   <option key={genre} value={genre}>
@@ -79,6 +107,34 @@ const AllBooks = () => {
                 ))}
               </select>
             </div>
+            {/* filter by genre */}
+
+            {/* filter by year */}
+            <div>
+              <label className="label">
+                <span className="label-text-alt">
+                  Filter by publication year
+                </span>
+              </label>
+              <select
+                value={selectedYear}
+                onChange={handleYearSelect}
+                className="select select-bordered select-primary select-sm"
+                onFocus={() => setShowYearPlaceholder(false)}
+                onBlur={() => setShowYearPlaceholder(!selectedYear)}
+              >
+                {showYearPlaceholder && (
+                  <option value="">Select an year</option>
+                )}
+                <option value="">All</option>
+                {allPublicationYears.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {/* filter by year */}
           </div>
 
           <div>
