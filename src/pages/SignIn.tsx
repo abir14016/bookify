@@ -33,6 +33,7 @@ const SignIn = () => {
     }
     if (isSuccess && data) {
       dispatch(setAccessToken(data?.data?.accessToken));
+      localStorage.setItem("accessToken", data?.data?.accessToken);
       swal("Congratulations!", "User signed in Successfully!", "success");
     }
   }, [isError, isSuccess, data, dispatch]);

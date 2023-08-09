@@ -3,9 +3,19 @@ import { Link } from "react-router-dom";
 import logo from "../../src/assets/images/bookify.png";
 import wishlist from "../../src/assets/images/wishlist.png";
 import { useAppSelector } from "../redux/hooks";
+import jwt_decode from "jwt-decode";
 
+type IDecoded = {
+  userEmail: string;
+  name: string;
+};
 const Navbar = () => {
   const { accessToken } = useAppSelector((state) => state.auth);
+  let decoded: IDecoded | null = null;
+  if (accessToken) {
+    decoded = jwt_decode(accessToken);
+  }
+  const avatarText = decoded?.name[0].toUpperCase();
   const menuItems = (
     <React.Fragment>
       <li>
@@ -74,7 +84,7 @@ const Navbar = () => {
           <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
             <div className="avatar online placeholder">
               <div className="bg-neutral-focus text-neutral-content rounded-full w-10">
-                <span className="text-xl">JO</span>
+                <span className="text-xl">{avatarText}</span>
               </div>
             </div>
           </label>
