@@ -5,11 +5,8 @@ import wishlist from "../../src/assets/images/wishlist.png";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { clearAccessToken } from "../redux/features/auth/authSlice";
 import { parseAccessToken } from "../utils/utils";
+import { IDecoded } from "../types/globalTypes";
 
-type IDecoded = {
-  userEmail: string;
-  name: string;
-};
 const Navbar = () => {
   const dispatch = useAppDispatch();
   const { accessToken } = useAppSelector((state) => state.auth);
@@ -17,7 +14,7 @@ const Navbar = () => {
   if (accessToken) {
     decoded = parseAccessToken(accessToken) as IDecoded;
   }
-  const avatarText = decoded?.name[0].toUpperCase();
+  const avatarText = decoded?.userName[0].toUpperCase();
   const menuItems = (
     <React.Fragment>
       <li>
@@ -26,11 +23,6 @@ const Navbar = () => {
       <li>
         <Link to="/books">All Books</Link>
       </li>
-      {decoded?.userEmail && (
-        <li>
-          <Link to="/add-new-book">Add New Book</Link>
-        </li>
-      )}
       <li>
         <Link to="/add-new-book">Add New Book</Link>
       </li>

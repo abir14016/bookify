@@ -16,3 +16,17 @@ export type IBook = {
   owner: IOwner;
   reviews?: [Record<string, unknown>];
 };
+
+export type IDecoded = {
+  userEmail: string;
+  userName: string;
+  userId: string;
+};
+
+export type IGenre =
+  | "Self-Help"
+  | "Detective"
+  | "Programming"
+  | "Thriller"
+  | "Science Fiction"
+  | "Novel";

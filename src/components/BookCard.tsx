@@ -7,6 +7,15 @@ interface IProps {
 
 const BookCard = ({ book }: IProps) => {
   const { _id, title, author, genre, imageURL, publicationYear } = book;
+
+  // Fallback placeholder image URL
+  const placeholderImageURL =
+    "https://songsofpraise.in/wp-content/uploads/2020/09/no-thumbnail.jpg";
+
+  // Function to handle image loading errors
+  const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    event.currentTarget.src = placeholderImageURL; // Set placeholder image URL
+  };
   return (
     <Link
       to={`/books/${_id}`}
@@ -18,6 +27,7 @@ const BookCard = ({ book }: IProps) => {
           alt="book"
           style={{ aspectRatio: "300 / 200" }}
           className=" w-[300px] h-[200px]"
+          onError={handleImageError}
         />
       </figure>
       <div className="card-body">
