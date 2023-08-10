@@ -1,11 +1,12 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useAddBookMutation } from "../redux/api/apiSlice";
+import {
+  useGetSingleBookQuery,
+  useUpdateBookMutation,
+} from "../redux/api/apiSlice";
 import swal from "sweetalert";
 import { useEffect } from "react";
-import { useAppSelector } from "../redux/hooks";
-import { IDecoded } from "../types/globalTypes";
-import { parseAccessToken } from "../utils/utils";
 import { genres } from "../constants/constants";
+import { useParams } from "react-router-dom";
 
 export type IBook = {
   title: string;
@@ -18,37 +19,49 @@ export type IBook = {
 };
 
 const EditBookModal = () => {
-  const { accessToken } = useAppSelector((state) => state.auth);
-  let decoded: IDecoded | null = null;
-  if (accessToken) {
-    decoded = parseAccessToken(accessToken) as IDecoded;
-  }
+  const { id } = useParams();
+  const { data: currentBookData } = useGetSingleBookQuery(id);
+  // eslint-disable-next-line no-unsafe-optional-chaining
+  const { title, author, genre, imageURL, publicationYear, owner } =
+    currentBookData.data;
+
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm<IBook>();
 
-  const [addBook, { isLoading, isError, isSuccess, data }] =
-    useAddBookMutation();
+  const [
+    updateBook,
+    {
+      isLoading: updateLoading,
+      isError: updateError,
+      isSuccess: updateSuccess,
+      data: updateDBook,
+    },
+  ] = useUpdateBookMutation();
+
   // submit button
   const onSubmit: SubmitHandler<IBook> = async (data: IBook) => {
     data.publicationYear = Number(data.publicationYear);
-    console.log("form data", typeof data.publicationYear);
-    addBook(data);
+    const options = {
+      id: id,
+      updatedData: data,
+    };
+    updateBook(options);
   };
 
   useEffect(() => {
-    if (isError) {
+    if (updateError) {
       swal("Oops!", "Failed to add book!", "error");
     }
-    if (isSuccess && data) {
-      swal("Congratulations!", "Book added uccessfully!", "success");
+    if (updateSuccess && updateDBook) {
+      swal("Congratulations!", "Book updated uccessfully!", "success");
     }
-  }, [isError, isSuccess, data]);
+  }, [updateError, updateSuccess, updateDBook]);
   return (
     <dialog className="modal" id="edit_book_modal">
-      <form method="dialog" className="modal-box w-11/12 max-w-5xl h-auto">
+      <div className="modal-box w-11/12 max-w-5xl h-auto border-2">
         <div className="modal-action">
           <a
             href="#"
@@ -82,6 +95,7 @@ const EditBookModal = () => {
                   </label>
                   <input
                     type="text"
+                    defaultValue={title}
                     placeholder="Book title"
                     className="input input-bordered w-full max-w-xs"
                     {...register("title", {
@@ -106,6 +120,7 @@ const EditBookModal = () => {
                   </label>
                   <input
                     type="text"
+                    defaultValue={author}
                     placeholder="Author Name"
                     className="input input-bordered w-full max-w-xs"
                     {...register("author", {
@@ -129,6 +144,7 @@ const EditBookModal = () => {
                     <span className="label-text">Genre</span>
                   </label>
                   <select
+                    defaultValue={genre}
                     className="input input-bordered w-full max-w-xs cursor-pointer"
                     {...register("genre", {
                       required: {
@@ -163,6 +179,7 @@ const EditBookModal = () => {
                   </label>
                   <input
                     type="text"
+                    defaultValue={imageURL}
                     placeholder="Book imageURL"
                     className="input input-bordered w-full max-w-xs"
                     {...register("imageURL", {
@@ -187,6 +204,7 @@ const EditBookModal = () => {
                   </label>
                   <input
                     type="number"
+                    defaultValue={publicationYear}
                     placeholder="Publication Year"
                     className="input input-bordered w-full max-w-xs"
                     {...register("publicationYear", {
@@ -211,8 +229,8 @@ const EditBookModal = () => {
                   </label>
                   <input
                     type="text"
-                    readOnly // Add the readOnly attribute
-                    defaultValue={decoded?.userId}
+                    // readOnly
+                    defaultValue={owner?._id}
                     className="input input-disabled text-blue-400 border-blue-400 input-bordered w-full max-w-xs"
                     {...register("owner", {
                       required: {
@@ -231,7 +249,7 @@ const EditBookModal = () => {
               </div>
             </div>
 
-            {!isLoading ? (
+            {!updateLoading ? (
               <div className="flex justify-end">
                 <input
                   className="btn btn-sm btn-primary btn-wide max-w-xs mt-10"
@@ -249,7 +267,7 @@ const EditBookModal = () => {
           </form>
         </div>
         {/* modal body */}
-      </form>
+      </div>
     </dialog>
   );
 };

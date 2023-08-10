@@ -1,12 +1,21 @@
 import { useParams } from "react-router-dom";
 import { useGetSingleBookQuery } from "../redux/api/apiSlice";
-import { IBook } from "../types/globalTypes";
+import { IBook, IDecoded } from "../types/globalTypes";
 import BookDetailSkeleton from "../components/BookDetailSkeleton";
 import EditBookModal from "../components/EditBookModal";
+import { useAppSelector } from "../redux/hooks";
+import { parseAccessToken } from "../utils/utils";
+import swal from "sweetalert";
 
 const BookDetail = () => {
   const { id } = useParams();
   const { data, isLoading } = useGetSingleBookQuery(id);
+
+  const { accessToken } = useAppSelector((state) => state.auth);
+  let decoded: IDecoded | null = null;
+  if (accessToken) {
+    decoded = parseAccessToken(accessToken) as IDecoded;
+  }
 
   if (isLoading) {
     return (
@@ -15,10 +24,16 @@ const BookDetail = () => {
       </div>
     ); // Render loading component
   }
-
   const book: IBook = data.data;
+
+  const isMatched: boolean = decoded?.userEmail === book?.owner?.email;
+  const handleEditButton = () => {
+    if (!isMatched) {
+      swal("Oops!", "You are not authorized to edit the book!", "error");
+    }
+  };
   return (
-    <div className="flex justify-center my-5 md:my-10 lg:my-16">
+    <div className="flex justify-center my-5 md:my-10 lg:my-16 h-screen items-center">
       <div className="card card-side bg-base-100 shadow-xl border border-gray-200 w-1/2">
         <figure>
           <img
@@ -46,7 +61,11 @@ const BookDetail = () => {
               </div>
             </div>
             <div className="flex justify-center">
-              <a href="#edit_book_modal" className="btn btn-info btn-sm mr-1">
+              <a
+                onClick={handleEditButton}
+                href={isMatched ? "#edit_book_modal" : "#"}
+                className="btn btn-info btn-sm mr-1"
+              >
                 Edit
               </a>
               <button className="btn btn-error btn-sm ml-1">Delete</button>

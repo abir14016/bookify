@@ -2,7 +2,16 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const api = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/api/v1/" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:5000/api/v1/",
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        headers.set("Authorization", `${token}`);
+      }
+      return headers;
+    },
+  }),
   endpoints: (builder) => ({
     getAllBooks: builder.query({
       query: () => `/books`,
@@ -34,6 +43,13 @@ export const api = createApi({
         body: bookData,
       }),
     }),
+    updateBook: builder.mutation({
+      query: ({ id, updatedData }) => ({
+        url: `/books/${id}`,
+        method: "PATCH",
+        body: updatedData,
+      }),
+    }),
   }),
 });
 
@@ -44,4 +60,5 @@ export const {
   useSignUpUserMutation,
   useSignInUserMutation,
   useAddBookMutation,
+  useUpdateBookMutation,
 } = api;

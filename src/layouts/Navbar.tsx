@@ -30,8 +30,6 @@ const Navbar = () => {
   );
   const handleLogout = () => {
     dispatch(clearAccessToken());
-
-    // Clear the access token stored in localStorage
     localStorage.removeItem("accessToken");
   };
   return (
