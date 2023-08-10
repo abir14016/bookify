@@ -157,7 +157,6 @@ const AllBooks = () => {
                 <BookCard book={book} key={book._id} />
               ))}
         </div>
-        <div className="flex justify-end"></div>
       </div>
     </div>
   );

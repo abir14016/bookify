@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useGetSingleBookQuery } from "../redux/api/apiSlice";
 import { IBook } from "../types/globalTypes";
 import BookDetailSkeleton from "../components/BookDetailSkeleton";
+import EditBookModal from "../components/EditBookModal";
 
 const BookDetail = () => {
   const { id } = useParams();
@@ -45,11 +46,14 @@ const BookDetail = () => {
               </div>
             </div>
             <div className="flex justify-center">
-              <button className="btn btn-info btn-sm mr-1">Edit</button>
+              <a href="#edit_book_modal" className="btn btn-info btn-sm mr-1">
+                Edit
+              </a>
               <button className="btn btn-error btn-sm ml-1">Delete</button>
             </div>
           </div>
         </div>
+        <EditBookModal></EditBookModal>
       </div>
     </div>
   );

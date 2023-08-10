@@ -17,7 +17,7 @@ export type IBook = {
   // reviews?: [IReviewResponse];
 };
 
-const AddBook = () => {
+const EditBookModal = () => {
   const { accessToken } = useAppSelector((state) => state.auth);
   let decoded: IDecoded | null = null;
   if (accessToken) {
@@ -47,11 +47,31 @@ const AddBook = () => {
     }
   }, [isError, isSuccess, data]);
   return (
-    <div className="md:flex justify-between items-center px-2 md:px-8 lg:px-64  h-screen">
-      {/* <div> */}
-      <div className="card w-full  bg-base-200 shadow-xl border-2">
-        <div className="card-body">
-          <h2 className="text-center text-3xl font-bold">Add Book</h2>
+    <dialog className="modal" id="edit_book_modal">
+      <form method="dialog" className="modal-box w-11/12 max-w-5xl h-auto">
+        <div className="modal-action">
+          <a
+            href="#"
+            className="btn btn-circle btn-ghost absolute right-2 top-2 text-error"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </a>
+        </div>
+        {/* modal body */}
+        <div>
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex justify-around items-center">
               <div>
@@ -228,10 +248,10 @@ const AddBook = () => {
             )}
           </form>
         </div>
-      </div>
-      {/* </div> */}
-    </div>
+        {/* modal body */}
+      </form>
+    </dialog>
   );
 };
 
-export default AddBook;
+export default EditBookModal;
