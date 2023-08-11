@@ -254,7 +254,7 @@ const EditBookModal = () => {
                 <input
                   className="btn btn-sm btn-primary btn-wide max-w-xs mt-10"
                   type="submit"
-                  value="Add Book"
+                  value="Edit Book"
                 />
               </div>
             ) : (
