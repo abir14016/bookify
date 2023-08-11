@@ -6,6 +6,7 @@ import EditBookModal from "../components/EditBookModal";
 import { useAppSelector } from "../redux/hooks";
 import { parseAccessToken } from "../utils/utils";
 import swal from "sweetalert";
+import DeleteBookModal from "../components/DeleteBookModal";
 
 const BookDetail = () => {
   const { id } = useParams();
@@ -26,6 +27,11 @@ const BookDetail = () => {
   const handleEditButton = () => {
     if (!isMatched) {
       swal("Oops!", "You are not authorized to edit the book!", "error");
+    }
+  };
+  const handleDeleteButton = () => {
+    if (!isMatched) {
+      swal("Oops!", "You are not authorized to delete the book!", "error");
     }
   };
   return (
@@ -74,11 +80,18 @@ const BookDetail = () => {
                   >
                     Edit
                   </a>
-                  <button className="btn btn-error btn-sm ml-1">Delete</button>
+                  <a
+                    onClick={handleDeleteButton}
+                    href={isMatched ? "#delete_book_modal" : "#"}
+                    className="btn btn-error btn-sm ml-1"
+                  >
+                    Delete
+                  </a>
                 </div>
               </div>
             </div>
             <EditBookModal></EditBookModal>
+            <DeleteBookModal></DeleteBookModal>
           </div>
         </div>
       ) : (

@@ -50,6 +50,12 @@ export const api = createApi({
         body: updatedData,
       }),
     }),
+    deleteBook: builder.mutation({
+      query: (id) => ({
+        url: `/books/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -61,4 +67,5 @@ export const {
   useSignInUserMutation,
   useAddBookMutation,
   useUpdateBookMutation,
+  useDeleteBookMutation,
 } = api;
