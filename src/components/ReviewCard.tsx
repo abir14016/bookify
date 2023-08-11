@@ -13,7 +13,7 @@ const ReviewCard = ({ id, review }: { id: string; review: IReview }) => {
       </blockquote>
       <figcaption className="flex items-center justify-center space-x-3">
         <div className="avatar placeholder">
-          <div className="bg-neutral-focus text-neutral-content rounded-full w-24">
+          <div className="bg-neutral-focus text-neutral-content rounded-full w-16">
             <span className="text-3xl">
               {review.reviewerEmail[0].toLocaleUpperCase()}
             </span>

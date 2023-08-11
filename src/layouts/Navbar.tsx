@@ -14,7 +14,7 @@ const Navbar = () => {
   if (accessToken) {
     decoded = parseAccessToken(accessToken) as IDecoded;
   }
-  const avatarText = decoded?.userName[0].toUpperCase();
+  const avatarText = decoded?.userEmail[0].toUpperCase();
   const menuItems = (
     <React.Fragment>
       <li>
@@ -104,20 +104,36 @@ const Navbar = () => {
             </label>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-200 rounded-box w-52"
             >
-              <li>
-                <a className="justify-between">
-                  Profile
-                  <span className="badge">New</span>
-                </a>
-              </li>
-              <li>
-                <a>Settings</a>
-              </li>
-              <li>
-                <a onClick={handleLogout}>Logout</a>
-              </li>
+              <div className="avatar placeholder flex justify-center">
+                <div className="bg-neutral-focus text-neutral-content rounded-full w-12">
+                  <span>{avatarText}</span>
+                </div>
+              </div>
+              <div>
+                <h2 className="text-lg text-gray-300 text-center">
+                  {decoded?.userName}
+                </h2>
+                <p className="text-sm text-gray-500 text-center">
+                  {decoded?.userEmail}
+                </p>
+              </div>
+              <div className="divider"></div>
+              <div className="mt-3">
+                <li>
+                  <a className="justify-between">
+                    Wishlist
+                    <span className="badge">New</span>
+                  </a>
+                </li>
+                <li>
+                  <a>Settings</a>
+                </li>
+                <li className="text-error">
+                  <a onClick={handleLogout}>Logout</a>
+                </li>
+              </div>
             </ul>
           </div>
         )}
