@@ -3,6 +3,7 @@ import BookCard from "../components/BookCard";
 import BookSkeleton from "../components/BookSkeleton";
 import { useGetAllBooksQuery } from "../redux/api/apiSlice";
 import { IBook } from "../types/globalTypes";
+import { Link } from "react-router-dom";
 
 const AllBooks = () => {
   const [showGenrePlaceholder, setShowGenrePlaceholder] = useState(true);
@@ -137,14 +138,29 @@ const AllBooks = () => {
             {/* filter by year */}
           </div>
 
-          <div>
-            <input
-              value={searchText}
-              onChange={handleInputChange}
-              type="text"
-              placeholder="Type here"
-              className="input input-bordered input-primary input-sm w-full max-w-xs"
-            />
+          <div className="flex justify end items-center">
+            <div>
+              <label className="label">
+                <span className="label-text-alt">Add your own book</span>
+              </label>
+              <Link to="/add-new-book" className="btn  btn-sm btn-secondary">
+                Add new book
+              </Link>
+            </div>
+            <div>
+              <label className="label">
+                <span className="label-text-alt">
+                  Search by title, author & genre
+                </span>
+              </label>
+              <input
+                value={searchText}
+                onChange={handleInputChange}
+                type="text"
+                placeholder="Search here"
+                className="input input-bordered input-primary input-sm w-full max-w-xs"
+              />
+            </div>
           </div>
         </div>
 
