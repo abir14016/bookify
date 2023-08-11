@@ -16,7 +16,10 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 const BookDetail = () => {
   const { id } = useParams();
-  const { data, isLoading } = useGetSingleBookQuery(id);
+  const { data, isLoading } = useGetSingleBookQuery(id, {
+    refetchOnMountOrArgChange: true,
+    pollingInterval: 30000,
+  });
 
   const { accessToken } = useAppSelector((state) => state.auth);
   let decoded: IDecoded | null = null;
@@ -24,19 +27,14 @@ const BookDetail = () => {
     decoded = parseAccessToken(accessToken) as IDecoded;
   }
 
-  const [
-    makeReview,
-    { isError, error, isLoading: isReviewLoading, isSuccess, data: newReview },
-  ] = useReviewMutation();
+  const [makeReview, { isError, error, isLoading: isReviewLoading }] =
+    useReviewMutation();
 
   useEffect(() => {
     if (isError && error) {
       swal("Oops!", "Failed to add review!", "error");
     }
-    if (isSuccess && newReview) {
-      swal("Congratulations!", "review added uccessfully!", "success");
-    }
-  }, [isError, isSuccess, newReview, error]);
+  }, [isError, error]);
 
   // react hook form
   const {
@@ -191,21 +189,35 @@ const BookDetail = () => {
       {/* review input */}
 
       {/* reviews section */}
-
       <div className="px-16">
         <div className="flex justify-between items-center mb-0 md:my-5 lg:my-10 xl:my-12">
           <div className="flex justify-start items-center text-4xl font-Poppins font-bold mr-5">
-            <h2 className="mr-3">Reviews</h2>
-            <hr className="hidden md:block lg:block xl:block  w-48 h-1 bg-gradient-to-r from-primary to-secondary rounded border-0" />
+            <h2 className="mr-3">
+              Reviews{" "}
+              <span className="badge badge-warning">
+                {book?.reviews?.length}
+              </span>
+            </h2>
+            <hr className="hidden md:block lg:block xl:block mt-3 w-48 h-1 bg-gradient-to-r from-primary to-secondary rounded border-0" />
           </div>
         </div>
-        <div className="grid mb-8 border rounded-lg shadow-sm border-gray-700 md:mb-12 md:grid-cols-2">
-          {book?.reviews?.map((review, index) => (
-            <ReviewCard key={index} review={review} id={id}></ReviewCard>
-          ))}
-        </div>
+        {book?.reviews?.length ? (
+          <div className="grid mb-8  rounded-lg shadow-sm  md:mb-12 md:grid-cols-2">
+            {book?.reviews?.map((review, index) => (
+              <ReviewCard key={index} review={review} id={id}></ReviewCard>
+            ))}
+          </div>
+        ) : (
+          <div>
+            <h1 className="text-center text-3xl text-gray-500 font-bold">
+              No review found !
+            </h1>
+            <h3 className="text-center text-gray-400">
+              please give your feedback
+            </h3>
+          </div>
+        )}
       </div>
-
       {/* reviews section */}
     </div>
   );

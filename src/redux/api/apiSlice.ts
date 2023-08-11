@@ -12,6 +12,7 @@ export const api = createApi({
       return headers;
     },
   }),
+  tagTypes: ["reviews"],
   endpoints: (builder) => ({
     getAllBooks: builder.query({
       query: () => `/books`,
@@ -21,6 +22,7 @@ export const api = createApi({
     }),
     getSingleBook: builder.query({
       query: (id) => `/books/${id}`,
+      providesTags: ["reviews"],
     }),
     signUpUser: builder.mutation({
       query: (userData) => ({
@@ -56,6 +58,7 @@ export const api = createApi({
         method: "PATCH",
         body: updatedData,
       }),
+      invalidatesTags: ["reviews"],
     }),
     deleteBook: builder.mutation({
       query: (id) => ({
