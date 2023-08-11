@@ -50,6 +50,13 @@ export const api = createApi({
         body: updatedData,
       }),
     }),
+    review: builder.mutation({
+      query: ({ id, updatedData }) => ({
+        url: `/books/review/${id}`,
+        method: "PATCH",
+        body: updatedData,
+      }),
+    }),
     deleteBook: builder.mutation({
       query: (id) => ({
         url: `/books/${id}`,
@@ -68,4 +75,5 @@ export const {
   useAddBookMutation,
   useUpdateBookMutation,
   useDeleteBookMutation,
+  useReviewMutation,
 } = api;

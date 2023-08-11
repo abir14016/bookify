@@ -1,9 +1,15 @@
-type IOwner = {
+export type IOwner = {
   name: string;
   email: string;
   updatedAt: string;
   createdAt: string;
   _id: string;
+};
+
+export type IReview = {
+  reviewerName: string;
+  reviewerEmail: string;
+  review: string;
 };
 
 export type IBook = {
@@ -14,7 +20,7 @@ export type IBook = {
   imageURL?: string;
   publicationYear: number;
   owner: IOwner;
-  reviews?: [Record<string, unknown>];
+  reviews?: [IReview] | undefined;
 };
 
 export type IDecoded = {
