@@ -1,14 +1,26 @@
 import { Link } from "react-router-dom";
-import { IBook } from "../../src/types/globalTypes";
+import { IBook, IDecoded } from "../../src/types/globalTypes";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faHeart, fas } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBookOpenReader,
+  faHeart,
+  fas,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useAppSelector } from "../redux/hooks";
+import { parseAccessToken } from "../utils/utils";
 
 interface IProps {
   book: IBook;
 }
 
 const BookCard = ({ book }: IProps) => {
+  const { accessToken } = useAppSelector((state) => state.auth);
+  let decoded: IDecoded | null = null;
+  if (accessToken) {
+    decoded = parseAccessToken(accessToken) as IDecoded;
+  }
+
   library.add(fas);
   const { _id, title, author, genre, imageURL, publicationYear } = book;
   // Fallback placeholder image URL
@@ -41,17 +53,28 @@ const BookCard = ({ book }: IProps) => {
           <p className="text-sm text-gray-400">by {author}</p>
           <p className="text-sm text-gray-400">year: {publicationYear}</p>
         </div>
-        <div className="card-actions justify-end mt-3">
-          <button className="btn btn-xs btn-outline btn-primary">
-            Fashion
-          </button>
-          <button>
-            <FontAwesomeIcon
-              className="hover:text-red-500 text-lg"
-              icon={faHeart}
-            ></FontAwesomeIcon>
-          </button>
-        </div>
+        {decoded?.userEmail && (
+          <div className="card-actions items-center justify-end mt-3">
+            <div
+              className="tooltip cursor-pointer group mr-3"
+              data-tip="Add to reading list"
+            >
+              <FontAwesomeIcon
+                className="group-hover:text-green-600 text-lg"
+                icon={faBookOpenReader}
+              ></FontAwesomeIcon>
+            </div>
+            <div
+              className="tooltip cursor-pointer group"
+              data-tip="Add to wishlist"
+            >
+              <FontAwesomeIcon
+                className="group-hover:text-red-600 text-lg"
+                icon={faHeart}
+              ></FontAwesomeIcon>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

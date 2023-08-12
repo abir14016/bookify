@@ -8,6 +8,10 @@ import BookDetail from "../pages/BookDetail";
 import AllBooks from "../pages/AllBooks";
 import AddBook from "../pages/AddBook";
 import PrivateRoute from "./privateRoute";
+import WishListDrawer from "../components/WishListDrawer";
+import WishList from "../pages/WishList";
+import ReadingList from "../pages/ReadingList";
+import CompletedList from "../pages/CompletedList";
 
 const routes = createBrowserRouter([
   {
@@ -34,6 +38,29 @@ const routes = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+      {
+        path: "/wishlist",
+        element: (
+          <PrivateRoute>
+            <WishListDrawer />
+          </PrivateRoute>
+        ),
+        children: [
+          {
+            index: true,
+            element: <WishList />,
+          },
+          {
+            path: "reading-list",
+            element: <ReadingList />,
+          },
+          {
+            path: "completed-list",
+            element: <CompletedList />,
+          },
+        ],
+      },
+
       {
         path: "/signin",
         element: <SignIn />,

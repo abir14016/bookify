@@ -71,6 +71,10 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-end">
+        {/* <label htmlFor="my-drawer" className="btn btn-primary drawer-button">
+          Open drawer
+        </label> */}
+
         {!accessToken ? (
           <Link to="/signin" className="btn btn-sm btn-outline btn-primary">
             Sign In
@@ -85,12 +89,12 @@ const Navbar = () => {
         )}
 
         {decoded?.userEmail && (
-          <label className="btn btn-ghost btn-circle">
+          <Link to="/wishlist" className="btn btn-ghost btn-circle">
             <div className="indicator">
               <img className="w-[40px]" src={wishlist} alt="wishlist" />
               <span className="badge badge-sm indicator-item">8</span>
             </div>
-          </label>
+          </Link>
         )}
 
         {decoded?.userEmail && (
