@@ -1,13 +1,16 @@
 import { Link } from "react-router-dom";
 import { IBook } from "../../src/types/globalTypes";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faHeart, fas } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface IProps {
   book: IBook;
 }
 
 const BookCard = ({ book }: IProps) => {
+  library.add(fas);
   const { _id, title, author, genre, imageURL, publicationYear } = book;
-
   // Fallback placeholder image URL
   const placeholderImageURL =
     "https://songsofpraise.in/wp-content/uploads/2020/09/no-thumbnail.jpg";
@@ -34,14 +37,19 @@ const BookCard = ({ book }: IProps) => {
         <h2 className="text-sm md:text-md lg:text-xl">
           {title} <span className="badge badge-xs badge-warning">{genre}</span>
         </h2>
-        <p className="text-sm text-gray-400">by {author}</p>
-        <p className="text-sm text-gray-400">year: {publicationYear}</p>
-        <div className="card-actions justify-end">
+        <div>
+          <p className="text-sm text-gray-400">by {author}</p>
+          <p className="text-sm text-gray-400">year: {publicationYear}</p>
+        </div>
+        <div className="card-actions justify-end mt-3">
           <button className="btn btn-xs btn-outline btn-primary">
             Fashion
           </button>
-          <button className="btn btn-xs btn-outline btn-secondary">
-            Products
+          <button>
+            <FontAwesomeIcon
+              className="hover:text-red-500 text-lg"
+              icon={faHeart}
+            ></FontAwesomeIcon>
           </button>
         </div>
       </div>

@@ -24,7 +24,7 @@ const SignIn = () => {
     handleSubmit,
   } = useForm<ISignInInput>();
 
-  const [signInUser, { isLoading, isError, isSuccess, data }] =
+  const [signInUser, { isLoading, isError, isSuccess, error, data }] =
     useSignInUserMutation();
   // submit button
   const onSubmit: SubmitHandler<ISignInInput> = async (data) => {
@@ -32,16 +32,16 @@ const SignIn = () => {
   };
 
   useEffect(() => {
-    if (isError) {
-      swal("Oops!", "Failed to sign in!", "error");
+    if (isError && error) {
+      swal("Oops!", `invalid email or wrong password`, "error");
     }
     if (isSuccess && data) {
       dispatch(setAccessToken(data?.data?.accessToken));
       localStorage.setItem("accessToken", data?.data?.accessToken);
-      navigate(from, { replace: true });
       swal("Congratulations!", "User signed in Successfully!", "success");
+      navigate(from, { replace: true });
     }
-  }, [isError, isSuccess, data, dispatch, navigate, from]);
+  }, [isError, isSuccess, data, dispatch, navigate, from, error]);
   return (
     <div className="md:flex justify-evenly items-center px-2 md:px-8 lg:px-12 h-screen">
       <div>
