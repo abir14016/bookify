@@ -66,6 +66,13 @@ export const api = createApi({
         method: "DELETE",
       }),
     }),
+    addToWishList: builder.mutation({
+      query: (wishListData) => ({
+        url: "/wishlist/add",
+        method: "POST",
+        body: wishListData,
+      }),
+    }),
   }),
 });
 
@@ -79,4 +86,5 @@ export const {
   useUpdateBookMutation,
   useDeleteBookMutation,
   useReviewMutation,
+  useAddToWishListMutation,
 } = api;

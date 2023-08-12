@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import { IBook, IDecoded } from "../../src/types/globalTypes";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -9,10 +10,14 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAppSelector } from "../redux/hooks";
 import { parseAccessToken } from "../utils/utils";
+import { useAddToWishListMutation } from "../redux/api/apiSlice";
+import swal from "sweetalert";
 
 interface IProps {
   book: IBook;
 }
+
+export type ITag = "will read in future" | "currently reading" | "completed";
 
 const BookCard = ({ book }: IProps) => {
   const { accessToken } = useAppSelector((state) => state.auth);
@@ -20,6 +25,28 @@ const BookCard = ({ book }: IProps) => {
   if (accessToken) {
     decoded = parseAccessToken(accessToken) as IDecoded;
   }
+
+  const [addToWishList, { isError, isLoading, isSuccess, data, error }] =
+    useAddToWishListMutation();
+  useEffect(() => {
+    if (isError && error) {
+      swal("Oops!", "Failed to add book to wishlist!", "error");
+    }
+    if (isSuccess && data) {
+      swal("Congratulations!", "Book added to wishlist!", "success");
+    }
+  }, [isError, isSuccess, data, error]);
+  const handleAddToWishList = async () => {
+    try {
+      await addToWishList({
+        user: decoded?.userId,
+        book: book?._id,
+        tag: "will read in future",
+      });
+    } catch (error) {
+      // swal("Oops!", "Failed to add to wishlist!", "error")
+    }
+  };
 
   library.add(fas);
   const { _id, title, author, genre, imageURL, publicationYear } = book;
@@ -65,13 +92,18 @@ const BookCard = ({ book }: IProps) => {
               ></FontAwesomeIcon>
             </div>
             <div
+              onClick={handleAddToWishList}
               className="tooltip cursor-pointer group"
               data-tip="Add to wishlist"
             >
-              <FontAwesomeIcon
-                className="group-hover:text-red-600 text-lg"
-                icon={faHeart}
-              ></FontAwesomeIcon>
+              {!isLoading ? (
+                <FontAwesomeIcon
+                  className="group-hover:text-red-600 text-lg"
+                  icon={faHeart}
+                ></FontAwesomeIcon>
+              ) : (
+                <span className="loading loading-sm loading-spinner text-warning"></span>
+              )}
             </div>
           </div>
         )}
