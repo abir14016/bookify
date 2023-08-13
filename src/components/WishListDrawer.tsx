@@ -1,6 +1,14 @@
 import { Link, Outlet } from "react-router-dom";
+import { useAppSelector } from "../redux/hooks";
+import { parseAccessToken } from "../utils/utils";
+import { IDecoded } from "../types/globalTypes";
 
 const WishListDrawer = () => {
+  const { accessToken } = useAppSelector((state) => state.auth);
+  let decoded: IDecoded | null = null;
+  if (accessToken) {
+    decoded = parseAccessToken(accessToken) as IDecoded;
+  }
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -8,7 +16,16 @@ const WishListDrawer = () => {
       {/* main content */}
       <div className="drawer-content p-10">
         {/* Page content here */}
-        <h2 className="text-3xl text-indigo-500">Your Wishlist</h2>
+        <div>
+          <p className="font-semibold font-mono">
+            {decoded?.userName}
+            {","}
+          </p>
+          <h2 className="text-3xl text-transparent font-bold bg-clip-text bg-gradient-to-r from-cyan-500 to-blue-500">
+            Your Dashboard
+          </h2>
+        </div>
+        <div className="divider"></div>
         <Outlet />
         <label
           htmlFor="my-drawer-2"

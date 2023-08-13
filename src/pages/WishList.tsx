@@ -1,5 +1,6 @@
 import WishListItem from "../components/WishListItem";
-import { useGetAllWishListBooksQuery } from "../redux/api/apiSlice";
+import { useGetMyWishListBooksQuery } from "../redux/api/apiSlice";
+import { useAppSelector } from "../redux/hooks";
 import { IBook, ITag } from "../types/globalTypes";
 
 type IUser = {
@@ -15,7 +16,8 @@ export type IWishList = {
 };
 
 const WishList = () => {
-  const { data } = useGetAllWishListBooksQuery(undefined);
+  const { accessToken } = useAppSelector((state) => state.auth);
+  const { data } = useGetMyWishListBooksQuery(accessToken);
   return (
     <div>
       <h3 className="text-yellow-500">wishlist</h3>
@@ -24,10 +26,10 @@ const WishList = () => {
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
-                Name
+                Book Name
               </th>
               <th scope="col" className="px-6 py-3">
-                Position
+                Added By
               </th>
               <th scope="col" className="px-6 py-3">
                 Status

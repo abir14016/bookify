@@ -1,6 +1,7 @@
 import { IWishList } from "../pages/WishList";
 
 const WishListItem = ({ item }: { item: IWishList }) => {
+  console.log(item.book.owner.name);
   return (
     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
       <th
@@ -20,20 +21,17 @@ const WishListItem = ({ item }: { item: IWishList }) => {
           <div className="font-normal text-gray-500">{item?.book?.author}</div>
         </div>
       </th>
-      <td className="px-6 py-4">React Developer</td>
+      <td className="px-6 py-4">{item?.book?.owner?.name}</td>
       <td className="px-6 py-4">
         <div className="flex items-center">
-          <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div>{" "}
+          <div className="h-2.5 w-2.5 rounded-full bg-yellow-500 mr-2"></div>{" "}
           {item?.tag}
         </div>
       </td>
       <td className="px-6 py-4">
-        <a
-          href="#"
-          className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-        >
+        <button className="btn btn-primary lowercase font-semibold btn-xs">
           make as read
-        </a>
+        </button>
       </td>
     </tr>
   );

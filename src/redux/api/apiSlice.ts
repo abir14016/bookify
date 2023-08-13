@@ -12,13 +12,14 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ["reviews"],
+  tagTypes: ["reviews", "wishlist"],
   endpoints: (builder) => ({
     getAllBooks: builder.query({
       query: () => `/books`,
     }),
     getBooks: builder.query({
       query: () => "/books?limit=10",
+      providesTags: ["reviews"],
     }),
     getSingleBook: builder.query({
       query: (id) => `/books/${id}`,
@@ -72,9 +73,15 @@ export const api = createApi({
         method: "POST",
         body: wishListData,
       }),
+      invalidatesTags: ["wishlist"],
     }),
     getAllWishListBooks: builder.query({
       query: () => "/wishlist",
+      providesTags: ["wishlist"],
+    }),
+    getMyWishListBooks: builder.query({
+      query: () => "/wishlist/mylist",
+      providesTags: ["wishlist"],
     }),
   }),
 });
@@ -91,4 +98,5 @@ export const {
   useReviewMutation,
   useAddToWishListMutation,
   useGetAllWishListBooksQuery,
+  useGetMyWishListBooksQuery,
 } = api;
