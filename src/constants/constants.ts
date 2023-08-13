@@ -1,4 +1,4 @@
-import { IGenre } from "../types/globalTypes";
+import { IGenre, ITag } from "../types/globalTypes";
 
 export const genres: IGenre[] = [
   "Self-Help",
@@ -7,4 +7,10 @@ export const genres: IGenre[] = [
   "Thriller",
   "Science Fiction",
   "Novel",
+];
+
+export const tags: ITag[] = [
+  "will read in future",
+  "currently reading",
+  "completed",
 ];

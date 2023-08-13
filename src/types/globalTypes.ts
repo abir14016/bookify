@@ -36,3 +36,5 @@ export type IGenre =
   | "Thriller"
   | "Science Fiction"
   | "Novel";
+
+export type ITag = "will read in future" | "currently reading" | "completed";

@@ -73,6 +73,9 @@ export const api = createApi({
         body: wishListData,
       }),
     }),
+    getAllWishListBooks: builder.query({
+      query: () => "/wishlist",
+    }),
   }),
 });
 
@@ -87,4 +90,5 @@ export const {
   useDeleteBookMutation,
   useReviewMutation,
   useAddToWishListMutation,
+  useGetAllWishListBooksQuery,
 } = api;
