@@ -16,10 +16,11 @@ export const api = createApi({
   endpoints: (builder) => ({
     getAllBooks: builder.query({
       query: () => `/books`,
+      providesTags: ["reviews", "wishlist"],
     }),
     getBooks: builder.query({
       query: () => "/books?limit=10",
-      providesTags: ["reviews"],
+      providesTags: ["reviews", "wishlist"],
     }),
     getSingleBook: builder.query({
       query: (id) => `/books/${id}`,

@@ -10,8 +10,12 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAppSelector } from "../redux/hooks";
 import { parseAccessToken } from "../utils/utils";
-import { useAddToWishListMutation } from "../redux/api/apiSlice";
+import {
+  useAddToWishListMutation,
+  useGetMyWishListBooksQuery,
+} from "../redux/api/apiSlice";
 import swal from "sweetalert";
+import { IWishList } from "../pages/WishList";
 
 interface IProps {
   book: IBook;
@@ -21,21 +25,24 @@ export type ITag = "will read in future" | "currently reading" | "completed";
 
 const BookCard = ({ book }: IProps) => {
   const { accessToken } = useAppSelector((state) => state.auth);
+  const { data: myWishListBooks } = useGetMyWishListBooksQuery(accessToken);
+  const userWishlist = myWishListBooks?.data;
+  // Check if the book is in the user's wishlist
+  const isBookInWishlist = userWishlist?.some(
+    (item: IWishList) => item.book._id === book._id
+  );
   let decoded: IDecoded | null = null;
   if (accessToken) {
     decoded = parseAccessToken(accessToken) as IDecoded;
   }
 
-  const [addToWishList, { isError, isLoading, isSuccess, data, error }] =
+  const [addToWishList, { isError, isLoading, error }] =
     useAddToWishListMutation();
   useEffect(() => {
     if (isError && error) {
       swal("Oops!", "Failed to add book to wishlist!", "error");
     }
-    if (isSuccess && data) {
-      swal("Congratulations!", "Book added to wishlist!", "success");
-    }
-  }, [isError, isSuccess, data, error]);
+  }, [isError, error]);
   const handleAddToWishList = async () => {
     try {
       await addToWishList({
@@ -91,20 +98,37 @@ const BookCard = ({ book }: IProps) => {
                 icon={faBookOpenReader}
               ></FontAwesomeIcon>
             </div>
-            <div
-              onClick={handleAddToWishList}
-              className="tooltip cursor-pointer group"
-              data-tip="Add to wishlist"
-            >
-              {!isLoading ? (
-                <FontAwesomeIcon
-                  className="group-hover:text-red-600 text-lg"
-                  icon={faHeart}
-                ></FontAwesomeIcon>
-              ) : (
-                <span className="loading loading-sm loading-spinner text-warning"></span>
-              )}
-            </div>
+            {!isBookInWishlist ? (
+              <div
+                onClick={handleAddToWishList}
+                className="tooltip cursor-pointer group"
+                data-tip="Add to wishlist"
+              >
+                {!isLoading ? (
+                  <FontAwesomeIcon
+                    className="group-hover:text-red-600 text-lg"
+                    icon={faHeart}
+                  ></FontAwesomeIcon>
+                ) : (
+                  <span className="loading loading-sm loading-spinner text-warning"></span>
+                )}
+              </div>
+            ) : (
+              <div
+                // onClick={handleAddToWishList}
+                className="tooltip cursor-pointer group"
+                data-tip="Remove from wishlist"
+              >
+                {!isLoading ? (
+                  <FontAwesomeIcon
+                    className="group-hover:text-white text-lg text-red-600"
+                    icon={faHeart}
+                  ></FontAwesomeIcon>
+                ) : (
+                  <span className="loading loading-sm loading-spinner text-warning"></span>
+                )}
+              </div>
+            )}
           </div>
         )}
       </div>
