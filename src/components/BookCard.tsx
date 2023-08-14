@@ -49,7 +49,7 @@ const BookCard = ({ book }: IProps) => {
     useAddToWishListMutation();
   useEffect(() => {
     if (isError && error) {
-      swal("Oops!", "Failed to add book to wishlist!", "error");
+      swal("Oops!", "Failed to add to wishlist!", "error");
     }
   }, [isError, error]);
   const handleAddToWishList = async () => {
@@ -66,7 +66,8 @@ const BookCard = ({ book }: IProps) => {
   // add to wish list
 
   // add to reading list
-  const [addToReadingList] = useAddToReadingListMutation();
+  const [addToReadingList, { isLoading: isAddToReadingListLoading }] =
+    useAddToReadingListMutation();
   // const [isAddingToReadingList, setIsAddingToReadingList] = useState(false);
 
   const handleAddToReadingList = async () => {
@@ -77,7 +78,6 @@ const BookCard = ({ book }: IProps) => {
         book: book?._id,
         tag: "currently reading", // Update the tag
       });
-      swal("Success", "Book added to reading list", "success");
     } catch (error) {
       swal("Oops!", "Failed to add book to reading list!", "error");
     } finally {
@@ -126,10 +126,14 @@ const BookCard = ({ book }: IProps) => {
                 className="tooltip cursor-pointer group mr-3"
                 data-tip="Add to reading list"
               >
-                <FontAwesomeIcon
-                  className="group-hover:text-green-600 text-lg"
-                  icon={faBookOpenReader}
-                ></FontAwesomeIcon>
+                {!isAddToReadingListLoading ? (
+                  <FontAwesomeIcon
+                    className="group-hover:text-green-600 text-lg"
+                    icon={faBookOpenReader}
+                  ></FontAwesomeIcon>
+                ) : (
+                  <span className="loading loading-sm loading-spinner text-warning"></span>
+                )}
               </div>
             ) : (
               <div
@@ -137,10 +141,14 @@ const BookCard = ({ book }: IProps) => {
                 className="tooltip cursor-pointer group mr-3"
                 data-tip="Remove from reading list"
               >
-                <FontAwesomeIcon
-                  className="group-hover:text-white text-lg text-green-600"
-                  icon={faBookOpenReader}
-                ></FontAwesomeIcon>
+                {!isAddToReadingListLoading ? (
+                  <FontAwesomeIcon
+                    className="group-hover:text-white text-lg text-green-600"
+                    icon={faBookOpenReader}
+                  ></FontAwesomeIcon>
+                ) : (
+                  <span className="loading loading-sm loading-spinner text-warning"></span>
+                )}
               </div>
             )}
             {!isBookInWishlist ? (

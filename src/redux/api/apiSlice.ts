@@ -18,14 +18,20 @@ export const api = createApi({
       query: () => `/books`,
       providesTags: ["reviews", "wishlist"],
     }),
+
+    // get leatest 10 books api [GET]
     getBooks: builder.query({
       query: () => "/books?limit=10",
       providesTags: ["reviews", "wishlist"],
     }),
+
+    //get single book api by book id [GET]
     getSingleBook: builder.query({
       query: (id) => `/books/${id}`,
       providesTags: ["reviews"],
     }),
+
+    // sign up user api [POST]
     signUpUser: builder.mutation({
       query: (userData) => ({
         url: "/users/signup",
@@ -33,6 +39,8 @@ export const api = createApi({
         body: userData,
       }),
     }),
+
+    // sign in user api [POST]
     signInUser: builder.mutation({
       query: (userData) => ({
         url: "/auth/signin",
@@ -40,6 +48,8 @@ export const api = createApi({
         body: userData,
       }),
     }),
+
+    //add book api [POST]
     addBook: builder.mutation({
       query: (bookData) => ({
         url: "/books/create-book",
@@ -47,6 +57,8 @@ export const api = createApi({
         body: bookData,
       }),
     }),
+
+    //update book api [PATCH]
     updateBook: builder.mutation({
       query: ({ id, updatedData }) => ({
         url: `/books/${id}`,
@@ -54,6 +66,8 @@ export const api = createApi({
         body: updatedData,
       }),
     }),
+
+    //add review api [PATCH]
     review: builder.mutation({
       query: ({ id, updatedData }) => ({
         url: `/books/review/${id}`,
@@ -62,12 +76,16 @@ export const api = createApi({
       }),
       invalidatesTags: ["reviews"],
     }),
+
+    //delete book api [DELETE]
     deleteBook: builder.mutation({
       query: (id) => ({
         url: `/books/${id}`,
         method: "DELETE",
       }),
     }),
+
+    //add to wishlist api[POST]
     addToWishList: builder.mutation({
       query: (wishListData) => ({
         url: "/wishlist/add-to-wishlist",
@@ -76,22 +94,29 @@ export const api = createApi({
       }),
       invalidatesTags: ["wishlist"],
     }),
+
+    //add to reading list api[POST]
     addToReadingList: builder.mutation({
-      query: (wishListData) => ({
+      query: (readingListData) => ({
         url: "/wishlist/add-to-reading-list",
-        method: "PATCH",
-        body: wishListData,
+        method: "POST",
+        body: readingListData,
       }),
       invalidatesTags: ["wishlist"],
     }),
+    //unused api
     getAllWishListBooks: builder.query({
       query: () => "/wishlist",
       providesTags: ["wishlist"],
     }),
+
+    //get my wishlist books api [by user]
     getMyWishListBooks: builder.query({
       query: () => "/wishlist/my-wishlist",
       providesTags: ["wishlist"],
     }),
+
+    //get my reading list books api [by user]
     getMyReadingListBooks: builder.query({
       query: () => "/wishlist/my-reading-list",
       providesTags: ["wishlist"],
