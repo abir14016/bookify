@@ -11,7 +11,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAppSelector } from "../redux/hooks";
 import { parseAccessToken } from "../utils/utils";
 import {
+  useAddToReadingListMutation,
   useAddToWishListMutation,
+  useGetMyReadingListBooksQuery,
   useGetMyWishListBooksQuery,
 } from "../redux/api/apiSlice";
 import swal from "sweetalert";
@@ -21,14 +23,20 @@ interface IProps {
   book: IBook;
 }
 
-export type ITag = "will read in future" | "currently reading" | "completed";
+// export type ITag = "will read in future" | "currently reading" | "completed";
 
 const BookCard = ({ book }: IProps) => {
   const { accessToken } = useAppSelector((state) => state.auth);
   const { data: myWishListBooks } = useGetMyWishListBooksQuery(accessToken);
+  const { data: myReadingBooks } = useGetMyReadingListBooksQuery(accessToken);
+
   const userWishlist = myWishListBooks?.data;
+  const userReadingList = myReadingBooks?.data;
   // Check if the book is in the user's wishlist
   const isBookInWishlist = userWishlist?.some(
+    (item: IWishList) => item.book._id === book._id
+  );
+  const isBookInReadinglist = userReadingList?.some(
     (item: IWishList) => item.book._id === book._id
   );
   let decoded: IDecoded | null = null;
@@ -36,6 +44,7 @@ const BookCard = ({ book }: IProps) => {
     decoded = parseAccessToken(accessToken) as IDecoded;
   }
 
+  // add to wish list
   const [addToWishList, { isError, isLoading, error }] =
     useAddToWishListMutation();
   useEffect(() => {
@@ -54,6 +63,28 @@ const BookCard = ({ book }: IProps) => {
       // swal("Oops!", "Failed to add to wishlist!", "error")
     }
   };
+  // add to wish list
+
+  // add to reading list
+  const [addToReadingList] = useAddToReadingListMutation();
+  // const [isAddingToReadingList, setIsAddingToReadingList] = useState(false);
+
+  const handleAddToReadingList = async () => {
+    // setIsAddingToReadingList(true);
+    try {
+      await addToReadingList({
+        user: decoded?.userId,
+        book: book?._id,
+        tag: "currently reading", // Update the tag
+      });
+      swal("Success", "Book added to reading list", "success");
+    } catch (error) {
+      swal("Oops!", "Failed to add book to reading list!", "error");
+    } finally {
+      // setIsAddingToReadingList(false);
+    }
+  };
+  // add to reading list
 
   library.add(fas);
   const { _id, title, author, genre, imageURL, publicationYear } = book;
@@ -89,15 +120,29 @@ const BookCard = ({ book }: IProps) => {
         </div>
         {decoded?.userEmail && (
           <div className="card-actions items-center justify-end mt-3">
-            <div
-              className="tooltip cursor-pointer group mr-3"
-              data-tip="Add to reading list"
-            >
-              <FontAwesomeIcon
-                className="group-hover:text-green-600 text-lg"
-                icon={faBookOpenReader}
-              ></FontAwesomeIcon>
-            </div>
+            {!isBookInReadinglist ? (
+              <div
+                onClick={handleAddToReadingList}
+                className="tooltip cursor-pointer group mr-3"
+                data-tip="Add to reading list"
+              >
+                <FontAwesomeIcon
+                  className="group-hover:text-green-600 text-lg"
+                  icon={faBookOpenReader}
+                ></FontAwesomeIcon>
+              </div>
+            ) : (
+              <div
+                // onClick={handleAddToReadingList}
+                className="tooltip cursor-pointer group mr-3"
+                data-tip="Remove from reading list"
+              >
+                <FontAwesomeIcon
+                  className="group-hover:text-white text-lg text-green-600"
+                  icon={faBookOpenReader}
+                ></FontAwesomeIcon>
+              </div>
+            )}
             {!isBookInWishlist ? (
               <div
                 onClick={handleAddToWishList}

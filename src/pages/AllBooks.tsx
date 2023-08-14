@@ -22,7 +22,7 @@ const AllBooks = () => {
   const { data, isLoading } = useGetAllBooksQuery(undefined);
   let books: IBook[] = [];
   if (!isLoading) {
-    books = data.data;
+    books = data?.data;
   }
 
   // Retrieve unique genres from the book data

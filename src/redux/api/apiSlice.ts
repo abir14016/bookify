@@ -70,8 +70,16 @@ export const api = createApi({
     }),
     addToWishList: builder.mutation({
       query: (wishListData) => ({
-        url: "/wishlist/add",
+        url: "/wishlist/add-to-wishlist",
         method: "POST",
+        body: wishListData,
+      }),
+      invalidatesTags: ["wishlist"],
+    }),
+    addToReadingList: builder.mutation({
+      query: (wishListData) => ({
+        url: "/wishlist/add-to-reading-list",
+        method: "PATCH",
         body: wishListData,
       }),
       invalidatesTags: ["wishlist"],
@@ -81,7 +89,11 @@ export const api = createApi({
       providesTags: ["wishlist"],
     }),
     getMyWishListBooks: builder.query({
-      query: () => "/wishlist/mylist",
+      query: () => "/wishlist/my-wishlist",
+      providesTags: ["wishlist"],
+    }),
+    getMyReadingListBooks: builder.query({
+      query: () => "/wishlist/my-reading-list",
       providesTags: ["wishlist"],
     }),
   }),
@@ -100,4 +112,6 @@ export const {
   useAddToWishListMutation,
   useGetAllWishListBooksQuery,
   useGetMyWishListBooksQuery,
+  useAddToReadingListMutation,
+  useGetMyReadingListBooksQuery,
 } = api;

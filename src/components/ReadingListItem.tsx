@@ -1,6 +1,6 @@
 import { IWishList } from "../pages/WishList";
 
-const WishListItem = ({ item }: { item: IWishList }) => {
+const ReadingListItem = ({ item }: { item: IWishList }) => {
   return (
     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
       <th
@@ -23,17 +23,17 @@ const WishListItem = ({ item }: { item: IWishList }) => {
       <td className="px-6 py-4">{item?.book?.owner?.name}</td>
       <td className="px-6 py-4">
         <div className="flex items-center">
-          <div className="h-2.5 w-2.5 rounded-full bg-yellow-500 mr-2"></div>{" "}
+          <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div>{" "}
           {item?.tag}
         </div>
       </td>
       <td className="px-6 py-4">
-        <button className="btn btn-error lowercase font-semibold btn-xs">
-          Remove
+        <button className="btn btn-primary lowercase font-semibold btn-xs">
+          make as read
         </button>
       </td>
     </tr>
   );
 };
 
-export default WishListItem;
+export default ReadingListItem;
