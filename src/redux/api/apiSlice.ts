@@ -121,6 +121,21 @@ export const api = createApi({
       query: () => "/wishlist/my-reading-list",
       providesTags: ["wishlist"],
     }),
+
+    //get my completed list books api [by user]
+    getMyCompletedListBooks: builder.query({
+      query: () => "/wishlist/my-completed-list",
+      providesTags: ["wishlist"],
+    }),
+
+    markASRead: builder.mutation({
+      query: (updatedData) => ({
+        url: `/wishlist/my-reading-list/mark-as-read`,
+        method: "PATCH",
+        body: updatedData,
+      }),
+      invalidatesTags: ["wishlist"],
+    }),
   }),
 });
 
@@ -139,4 +154,6 @@ export const {
   useGetMyWishListBooksQuery,
   useAddToReadingListMutation,
   useGetMyReadingListBooksQuery,
+  useMarkASReadMutation,
+  useGetMyCompletedListBooksQuery,
 } = api;
