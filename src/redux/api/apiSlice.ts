@@ -12,7 +12,7 @@ export const api = createApi({
       return headers;
     },
   }),
-  tagTypes: ["reviews", "wishlist"],
+  tagTypes: ["reviews", "wishlist", "book"],
   endpoints: (builder) => ({
     getAllBooks: builder.query({
       query: () => `/books`,
@@ -28,7 +28,7 @@ export const api = createApi({
     //get single book api by book id [GET]
     getSingleBook: builder.query({
       query: (id) => `/books/${id}`,
-      providesTags: ["reviews"],
+      providesTags: ["reviews", "book"],
     }),
 
     // sign up user api [POST]
@@ -65,6 +65,7 @@ export const api = createApi({
         method: "PATCH",
         body: updatedData,
       }),
+      invalidatesTags: ["book"],
     }),
 
     //add review api [PATCH]

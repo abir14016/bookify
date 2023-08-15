@@ -19,6 +19,7 @@ import {
 } from "../redux/api/apiSlice";
 import swal from "sweetalert";
 import { IWishList } from "../pages/WishList";
+import { placeholderImageURL } from "../constants/constants";
 
 interface IProps {
   book: IBook;
@@ -34,14 +35,14 @@ const BookCard = ({ book }: IProps) => {
   const userWishlist = myWishListBooksSuccess ? myWishListBooks?.data : [];
   const userReadingList = myReadingListBooksSuccess ? myReadingBooks?.data : [];
   const BookExistInWishList = userWishlist?.find(
-    (item: IWishList) => item.book._id === book._id
+    (item: IWishList) => item?.book?._id === book?._id
   );
   // Check if the book is in the user's wishlist
   const isBookInWishlist = userWishlist?.some(
-    (item: IWishList) => item.book._id === book._id
+    (item: IWishList) => item?.book?._id === book?._id
   );
   const isBookInReadinglist = userReadingList?.some(
-    (item: IWishList) => item.book._id === book._id
+    (item: IWishList) => item?.book?._id === book?._id
   );
   let decoded: IDecoded | null = null;
   if (accessToken) {
@@ -117,8 +118,6 @@ const BookCard = ({ book }: IProps) => {
   library.add(fas);
   const { _id, title, author, genre, imageURL, publicationYear } = book;
   // Fallback placeholder image URL
-  const placeholderImageURL =
-    "https://songsofpraise.in/wp-content/uploads/2020/09/no-thumbnail.jpg";
 
   // Function to handle image loading errors
   const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {

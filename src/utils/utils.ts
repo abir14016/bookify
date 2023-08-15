@@ -5,7 +5,7 @@ export const parseAccessToken = (accessToken: string) => {
     const decoded = jwt_decode(accessToken);
     return decoded;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return null;
   }
 };

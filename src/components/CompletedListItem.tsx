@@ -1,8 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IWishList } from "../pages/WishList";
 import { faCheckDouble } from "@fortawesome/free-solid-svg-icons";
+import { placeholderImageURL } from "../constants/constants";
 
 const CompletedListItem = ({ item }: { item: IWishList }) => {
+  // Function to handle image loading errors
+  const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    event.currentTarget.src = placeholderImageURL; // Set placeholder image URL
+  };
   return (
     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
       <th
@@ -14,6 +19,7 @@ const CompletedListItem = ({ item }: { item: IWishList }) => {
             <img
               src={item?.book?.imageURL}
               alt="Tailwind-CSS-Avatar-component"
+              onError={handleImageError}
             />
           </div>
         </div>

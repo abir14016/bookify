@@ -14,3 +14,6 @@ export const tags: ITag[] = [
   "currently reading",
   "completed",
 ];
+
+export const placeholderImageURL =
+  "https://songsofpraise.in/wp-content/uploads/2020/09/no-thumbnail.jpg";

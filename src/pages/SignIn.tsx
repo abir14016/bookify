@@ -92,20 +92,9 @@ const SignIn = () => {
                       value: true,
                       message: "Password is required",
                     },
-                    pattern: {
-                      value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-                      message:
-                        "password must contain at least 1 number & 1 letter",
-                    },
-                    minLength: {
-                      value: 8,
-                      message: "plz provide 8 characters or longer",
-                    },
                   })}
                 />
-                {(errors.password?.type === "required" ||
-                  errors.password?.type === "pattern" ||
-                  errors.password?.type === "minLength") && (
+                {errors.password?.type === "required" && (
                   <p className="text-sm text-warning" role="alert">
                     {errors?.password?.message}
                   </p>

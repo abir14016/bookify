@@ -34,7 +34,6 @@ const AddBook = () => {
   // submit button
   const onSubmit: SubmitHandler<IBook> = async (data: IBook) => {
     data.publicationYear = Number(data.publicationYear);
-    console.log("form data", typeof data.publicationYear);
     addBook(data);
   };
 

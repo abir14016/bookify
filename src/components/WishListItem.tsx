@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { IWishList } from "../pages/WishList";
 import { useRemoveFromWishListMutation } from "../redux/api/apiSlice";
 import swal from "sweetalert";
+import { placeholderImageURL } from "../constants/constants";
 
 const WishListItem = ({ item }: { item: IWishList }) => {
   const [removeFromWishList, { isLoading, isError, error }] =
@@ -15,6 +16,11 @@ const WishListItem = ({ item }: { item: IWishList }) => {
   const handleRemoveFromWishList = () => {
     removeFromWishList(item);
   };
+
+  // Function to handle image loading errors
+  const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    event.currentTarget.src = placeholderImageURL; // Set placeholder image URL
+  };
   return (
     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
       <th
@@ -26,6 +32,7 @@ const WishListItem = ({ item }: { item: IWishList }) => {
             <img
               src={item?.book?.imageURL}
               alt="Tailwind-CSS-Avatar-component"
+              onError={handleImageError}
             />
           </div>
         </div>

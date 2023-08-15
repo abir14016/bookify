@@ -1,9 +1,11 @@
 import signupImage from "../../src/assets/images/regester-2.png";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSignUpUserMutation } from "../redux/api/apiSlice";
 import swal from "sweetalert";
 import { useEffect } from "react";
+import { useAppDispatch } from "../redux/hooks";
+import { setAccessToken } from "../redux/features/auth/authSlice";
 
 type ISignUpInput = {
   name: string;
@@ -12,17 +14,21 @@ type ISignUpInput = {
 };
 
 const SignUp = () => {
+  const dispatch = useAppDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const from = location.state?.from?.pathname || "/";
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm<ISignUpInput>();
 
-  const [signUpUser, { isLoading, isError, isSuccess }] =
+  const [signUpUser, { isLoading, isError, isSuccess, data }] =
     useSignUpUserMutation();
   // submit button
   const onSubmit: SubmitHandler<ISignUpInput> = async (data) => {
-    console.log("form data", data);
     signUpUser(data);
   };
 
@@ -30,10 +36,13 @@ const SignUp = () => {
     if (isError) {
       swal("Oops!", "Failed to create User!", "error");
     }
-    if (isSuccess) {
-      swal("Congratulations!", "User Created Successfully!", "success");
+    if (isSuccess && data) {
+      dispatch(setAccessToken(data?.data?.accessToken));
+      localStorage.setItem("accessToken", data?.data?.accessToken);
+      swal("Congratulations!", "User created Successfully!", "success");
+      navigate(from, { replace: true });
     }
-  }, [isError, isSuccess]);
+  }, [isError, isSuccess, data, dispatch, navigate, from]);
   return (
     <div className="md:flex justify-evenly items-center px-2 md:px-8 lg:px-12 h-screen">
       <div>

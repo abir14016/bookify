@@ -111,9 +111,8 @@ const Navbar = () => {
 
         {decoded?.userEmail && (
           <Link to="/wishlist" className="btn btn-ghost btn-circle">
-            <div className="indicator">
+            <div>
               <img className="w-[40px]" src={wishlist} alt="wishlist" />
-              <span className="badge badge-sm indicator-item">8</span>
             </div>
           </Link>
         )}

@@ -13,6 +13,7 @@ import swal from "sweetalert";
 import DeleteBookModal from "../components/DeleteBookModal";
 import ReviewCard from "../components/ReviewCard";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { placeholderImageURL } from "../constants/constants";
 
 const BookDetail = () => {
   const { id } = useParams();
@@ -27,21 +28,28 @@ const BookDetail = () => {
     decoded = parseAccessToken(accessToken) as IDecoded;
   }
 
-  const [makeReview, { isError, error, isLoading: isReviewLoading }] =
-    useReviewMutation();
-
-  useEffect(() => {
-    if (isError && error) {
-      swal("Oops!", "Failed to add review!", "error");
-    }
-  }, [isError, error]);
-
   // react hook form
   const {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm<IReview>();
+
+  const [
+    makeReview,
+    { isSuccess: isReviewSuccess, isError, error, isLoading: isReviewLoading },
+  ] = useReviewMutation();
+
+  useEffect(() => {
+    if (isError && error) {
+      swal("Oops!", "Failed to add review!", "error");
+    }
+    if (isReviewSuccess) {
+      swal("Yes!", "Review added successfully!", "success");
+      reset();
+    }
+  }, [isError, error, isReviewSuccess, reset]);
 
   const onSubmit: SubmitHandler<IReview> = async (data: IReview) => {
     if (decoded) {
@@ -77,6 +85,11 @@ const BookDetail = () => {
     }
   };
 
+  // Function to handle image loading errors
+  const handleImageError = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    event.currentTarget.src = placeholderImageURL; // Set placeholder image URL
+  };
+
   return (
     <div className="px-2 md:px-8 lg:px-10 xl:px-12 my-16">
       <div className="flex justify-between items-center mb-0 md:my-5 lg:my-10 xl:my-12">
@@ -93,7 +106,8 @@ const BookDetail = () => {
                 style={{ aspectRatio: "300 / 350" }}
                 className=" w-[300px] h-[350px]"
                 src={book?.imageURL}
-                alt="Movie"
+                alt="book"
+                onError={handleImageError}
               />
             </figure>
             <div className="card-body">
