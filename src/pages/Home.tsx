@@ -22,14 +22,14 @@ const Home = () => {
           </div>
           <hr className="hidden md:block lg:block xl:block  w-48 h-1 bg-gradient-to-r from-primary to-secondary rounded border-0" />
         </div>
-        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-10 my-2 md:my-4 lg:my-6">
+        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-10 my-5 md:my-4 lg:my-6">
           {isLoading
             ? Array.from({ length: 10 }).map((_, index) => (
                 <BookSkeleton key={index} />
               ))
             : books.map((book) => <BookCard book={book} key={book._id} />)}
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-end my-10">
           <Link
             to="/books"
             className="btn btn-sm btn-primary btn-outline hover:btn-secondary"

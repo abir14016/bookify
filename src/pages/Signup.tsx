@@ -39,7 +39,7 @@ const SignUp = () => {
     if (isSuccess && data) {
       dispatch(setAccessToken(data?.data?.accessToken));
       localStorage.setItem("accessToken", data?.data?.accessToken);
-      swal("Congratulations!", "User created Successfully!", "success");
+      swal("Congratulations!", "Signup Successfull !", "success");
       navigate(from, { replace: true });
     }
   }, [isError, isSuccess, data, dispatch, navigate, from]);
