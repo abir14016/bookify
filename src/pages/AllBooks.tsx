@@ -33,7 +33,7 @@ const AllBooks = () => {
 
   // Retrieve unique years from the book data
   const allPublicationYears = [
-    ...new Set(books.map((book) => book.publicationYear)),
+    ...new Set(books?.map((book) => book?.publicationYear)),
   ];
 
   // Handler for input change
@@ -54,18 +54,18 @@ const AllBooks = () => {
   // Filtering books based on the search text
   const searchFilteredBooks = books.filter(
     (book) =>
-      book.title.toLowerCase().includes(searchText.toLowerCase()) ||
-      book.author.toLowerCase().includes(searchText.toLowerCase()) ||
-      book.genre.toLowerCase().includes(searchText.toLowerCase())
+      book?.title.toLowerCase().includes(searchText.toLowerCase()) ||
+      book?.author.toLowerCase().includes(searchText.toLowerCase()) ||
+      book?.genre.toLowerCase().includes(searchText.toLowerCase())
   );
 
   // Filtering books based on the selected genre
-  const genreFilteredBooks = books.filter(
+  const genreFilteredBooks = books?.filter(
     (book) => selectedGenre === "" || book.genre === selectedGenre
   );
 
   // Filtering books based on the selected year
-  const yearFilteredBooks = books.filter(
+  const yearFilteredBooks = books?.filter(
     (book) =>
       selectedYear === "" || book.publicationYear.toString() === selectedYear
   );
@@ -172,8 +172,8 @@ const AllBooks = () => {
             ? Array.from({ length: 20 }).map((_, index) => (
                 <BookSkeleton key={index} />
               ))
-            : combinedFilteredBooks.map((book) => (
-                <BookCard book={book} key={book._id} />
+            : combinedFilteredBooks?.map((book) => (
+                <BookCard book={book} key={book?._id} />
               ))}
         </div>
       </div>

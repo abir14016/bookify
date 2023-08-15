@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api/v1/",
+    baseUrl: "https://bookify-server-puxagxrg7-abir14016.vercel.app/api/v1/",
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("accessToken");
       if (token) {

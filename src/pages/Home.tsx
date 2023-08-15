@@ -11,7 +11,7 @@ const Home = () => {
   });
   let books: IBook[] = [];
   if (!isLoading) {
-    books = data.data;
+    books = data?.data;
   }
   return (
     <div>
@@ -27,7 +27,7 @@ const Home = () => {
             ? Array.from({ length: 10 }).map((_, index) => (
                 <BookSkeleton key={index} />
               ))
-            : books.map((book) => <BookCard book={book} key={book._id} />)}
+            : books.map((book) => <BookCard book={book} key={book?._id} />)}
         </div>
         <div className="flex justify-end my-10">
           <Link

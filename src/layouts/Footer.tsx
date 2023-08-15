@@ -1,4 +1,4 @@
-import logo from "../../public/bookify.png";
+import logo from "../../src/assets/images/bookify.png";
 
 const Footer = () => {
   return (
