@@ -4,8 +4,7 @@ type IReview = {
   review: string;
 };
 
-const ReviewCard = ({ id, review }: { id: string; review: IReview }) => {
-  console.log(id);
+const ReviewCard = ({ review }: { review: IReview }) => {
   return (
     <figure className="flex flex-col items-center justify-center p-8 text-center  border-b  rounded-t-lg md:rounded-t-none md:rounded-tl-lg md:border-r bg-gray-800 border-gray-700">
       <blockquote className="max-w-2xl mx-auto mb-4 lg:mb-8 text-gray-400">

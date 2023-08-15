@@ -24,15 +24,15 @@ interface IProps {
   book: IBook;
 }
 
-// export type ITag = "will read in future" | "currently reading" | "completed";
-
 const BookCard = ({ book }: IProps) => {
   const { accessToken } = useAppSelector((state) => state.auth);
-  const { data: myWishListBooks } = useGetMyWishListBooksQuery(accessToken);
-  const { data: myReadingBooks } = useGetMyReadingListBooksQuery(accessToken);
+  const { data: myWishListBooks, isSuccess: myWishListBooksSuccess } =
+    useGetMyWishListBooksQuery(accessToken, { skip: !accessToken });
+  const { data: myReadingBooks, isSuccess: myReadingListBooksSuccess } =
+    useGetMyReadingListBooksQuery(accessToken, { skip: !accessToken });
 
-  const userWishlist = myWishListBooks?.data;
-  const userReadingList = myReadingBooks?.data;
+  const userWishlist = myWishListBooksSuccess ? myWishListBooks?.data : [];
+  const userReadingList = myReadingListBooksSuccess ? myReadingBooks?.data : [];
   const BookExistInWishList = userWishlist?.find(
     (item: IWishList) => item.book._id === book._id
   );
@@ -128,7 +128,8 @@ const BookCard = ({ book }: IProps) => {
     <div className="card bg-gray-700 shadow-xl flex flex-col rounded-xl">
       <Link
         to={`/books/${_id}`}
-        className="hover:opacity-50 transition duration-200"
+        className="hover:opacity-50 transition duration-200 tooltip tooltip-primary"
+        data-tip="Click to view details"
       >
         <img
           src={imageURL}

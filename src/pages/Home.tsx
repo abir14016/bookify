@@ -5,7 +5,10 @@ import { useGetBooksQuery } from "../redux/api/apiSlice";
 import { IBook } from "../types/globalTypes";
 
 const Home = () => {
-  const { data, isLoading } = useGetBooksQuery(undefined);
+  const { data, isLoading } = useGetBooksQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    pollingInterval: 30000,
+  });
   let books: IBook[] = [];
   if (!isLoading) {
     books = data.data;

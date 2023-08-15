@@ -204,7 +204,7 @@ const BookDetail = () => {
         {book?.reviews?.length ? (
           <div className="grid mb-8  rounded-lg shadow-sm  md:mb-12 md:grid-cols-2">
             {book?.reviews?.map((review, index) => (
-              <ReviewCard key={index} review={review} id={id}></ReviewCard>
+              <ReviewCard key={index} review={review}></ReviewCard>
             ))}
           </div>
         ) : (

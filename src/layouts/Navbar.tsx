@@ -6,6 +6,12 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { clearAccessToken } from "../redux/features/auth/authSlice";
 import { parseAccessToken } from "../utils/utils";
 import { IDecoded } from "../types/globalTypes";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBook,
+  faBookMedical,
+  faHouse,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
@@ -17,14 +23,29 @@ const Navbar = () => {
   const avatarText = decoded?.userEmail[0].toUpperCase();
   const menuItems = (
     <React.Fragment>
-      <li>
-        <Link to="/">Home</Link>
+      <li className="tooltip tooltip-bottom mr-3" data-tip="Home">
+        <Link to="/">
+          <FontAwesomeIcon
+            className="text-lg text-primary"
+            icon={faHouse}
+          ></FontAwesomeIcon>
+        </Link>
       </li>
-      <li>
-        <Link to="/books">All Books</Link>
+      <li className="tooltip tooltip-bottom mr-3" data-tip="All Books">
+        <Link to="/books">
+          <FontAwesomeIcon
+            className="text-lg text-primary"
+            icon={faBook}
+          ></FontAwesomeIcon>
+        </Link>
       </li>
-      <li>
-        <Link to="/add-new-book">Add New Book</Link>
+      <li className="tooltip tooltip-bottom" data-tip="Add New Book">
+        <Link to="/add-new-book">
+          <FontAwesomeIcon
+            className="text-lg text-primary"
+            icon={faBookMedical}
+          ></FontAwesomeIcon>
+        </Link>
       </li>
     </React.Fragment>
   );

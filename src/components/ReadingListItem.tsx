@@ -6,17 +6,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckDouble } from "@fortawesome/free-solid-svg-icons";
 
 const ReadingListItem = ({ item }: { item: IWishList }) => {
-  const [markAsRead, { isLoading, isSuccess, isError, error, data }] =
-    useMarkASReadMutation();
+  const [markAsRead, { isLoading, isError, error }] = useMarkASReadMutation();
 
   useEffect(() => {
-    if (isSuccess && data) {
-      swal("Yes!", "mark as read successfully!", "success");
-    }
     if (isError && error) {
       swal("Oops!", "Failed to add to wishlist!", "error");
     }
-  }, [isError, error, isLoading, data, isSuccess]);
+  }, [isError, error]);
   //handler function for mark as read
   const handleMarkAsRead = () => {
     markAsRead(item);

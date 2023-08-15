@@ -19,7 +19,10 @@ const AllBooks = () => {
   const [selectedYear, setSelectedYear] = useState("");
 
   //data fetching by RTK query
-  const { data, isLoading } = useGetAllBooksQuery(undefined);
+  const { data, isLoading } = useGetAllBooksQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    pollingInterval: 30000,
+  });
   let books: IBook[] = [];
   if (!isLoading) {
     books = data?.data;
