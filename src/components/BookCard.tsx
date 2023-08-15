@@ -15,6 +15,7 @@ import {
   useAddToWishListMutation,
   useGetMyReadingListBooksQuery,
   useGetMyWishListBooksQuery,
+  useRemoveFromWishListMutation,
 } from "../redux/api/apiSlice";
 import swal from "sweetalert";
 import { IWishList } from "../pages/WishList";
@@ -32,6 +33,9 @@ const BookCard = ({ book }: IProps) => {
 
   const userWishlist = myWishListBooks?.data;
   const userReadingList = myReadingBooks?.data;
+  const BookExistInWishList = userWishlist?.find(
+    (item: IWishList) => item.book._id === book._id
+  );
   // Check if the book is in the user's wishlist
   const isBookInWishlist = userWishlist?.some(
     (item: IWishList) => item.book._id === book._id
@@ -64,6 +68,30 @@ const BookCard = ({ book }: IProps) => {
     }
   };
   // add to wish list
+
+  //remove from wishlist
+  const [
+    removeFromWishList,
+    {
+      isLoading: removeFromWishListLoading,
+      error: removeFromWishListError,
+      isError: removeFromWishListIsError,
+    },
+  ] = useRemoveFromWishListMutation();
+  useEffect(() => {
+    if (removeFromWishListError && removeFromWishListIsError) {
+      swal("Oops!", "Failed to remove from wishlist!", "error");
+    }
+  }, [removeFromWishListIsError, removeFromWishListError]);
+  const handleRemoveFromWishList = () => {
+    const options = {
+      _id: BookExistInWishList._id,
+      user: BookExistInWishList.user,
+      book: BookExistInWishList.book,
+    };
+    removeFromWishList(options);
+  };
+  //remove from wishlist
 
   // add to reading list
   const [addToReadingList, { isLoading: isAddToReadingListLoading }] =
@@ -120,37 +148,30 @@ const BookCard = ({ book }: IProps) => {
         </div>
         {decoded?.userEmail && (
           <div className="card-actions items-center justify-end mt-3">
-            {!isBookInReadinglist ? (
-              <div
-                onClick={handleAddToReadingList}
-                className="tooltip cursor-pointer group mr-3"
-                data-tip="Add to reading list"
-              >
-                {!isAddToReadingListLoading ? (
+            <div data-tip="Add to reading list" className="tooltip">
+              {!isBookInReadinglist ? (
+                <div>
+                  {!isAddToReadingListLoading ? (
+                    <FontAwesomeIcon
+                      onClick={handleAddToReadingList}
+                      className="hover:text-green-500  cursor-pointer mr-3"
+                      icon={faBookOpenReader}
+                    />
+                  ) : (
+                    <span className="loading loading-xs loading-spinner text-warning"></span>
+                  )}
+                </div>
+              ) : (
+                <div data-tip="Added to reading list" className="tooltip">
+                  <span className="text-green-600 text-lg">✓</span>
                   <FontAwesomeIcon
-                    className="group-hover:text-green-600 text-lg"
+                    area-disabled="true"
+                    className="text-green-500 tooltip mr-3"
                     icon={faBookOpenReader}
-                  ></FontAwesomeIcon>
-                ) : (
-                  <span className="loading loading-sm loading-spinner text-warning"></span>
-                )}
-              </div>
-            ) : (
-              <div
-                // onClick={handleAddToReadingList}
-                className="tooltip cursor-pointer group mr-3"
-                data-tip="Remove from reading list"
-              >
-                {!isAddToReadingListLoading ? (
-                  <FontAwesomeIcon
-                    className="group-hover:text-white text-lg text-green-600"
-                    icon={faBookOpenReader}
-                  ></FontAwesomeIcon>
-                ) : (
-                  <span className="loading loading-sm loading-spinner text-warning"></span>
-                )}
-              </div>
-            )}
+                  />
+                </div>
+              )}
+            </div>
             {!isBookInWishlist ? (
               <div
                 onClick={handleAddToWishList}
@@ -163,16 +184,16 @@ const BookCard = ({ book }: IProps) => {
                     icon={faHeart}
                   ></FontAwesomeIcon>
                 ) : (
-                  <span className="loading loading-sm loading-spinner text-warning"></span>
+                  <span className="loading loading-xs loading-spinner text-warning"></span>
                 )}
               </div>
             ) : (
               <div
-                // onClick={handleAddToWishList}
+                onClick={handleRemoveFromWishList}
                 className="tooltip cursor-pointer group"
                 data-tip="Remove from wishlist"
               >
-                {!isLoading ? (
+                {!removeFromWishListLoading ? (
                   <FontAwesomeIcon
                     className="group-hover:text-white text-lg text-red-600"
                     icon={faHeart}

@@ -126,13 +126,22 @@ const Navbar = () => {
               <div className="divider"></div>
               <div className="mt-3">
                 <li>
-                  <a className="justify-between">
+                  <Link to="/wishlist" className="justify-between">
                     Wishlist
-                    <span className="badge">New</span>
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a>Settings</a>
+                  <Link to="/wishlist/reading-list" className="justify-between">
+                    Reading list
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/wishlist/completed-list"
+                    className="justify-between"
+                  >
+                    Completed list
+                  </Link>
                 </li>
                 <li className="text-error">
                   <a onClick={handleLogout}>Logout</a>

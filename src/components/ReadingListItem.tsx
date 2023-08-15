@@ -19,7 +19,6 @@ const ReadingListItem = ({ item }: { item: IWishList }) => {
   }, [isError, error, isLoading, data, isSuccess]);
   //handler function for mark as read
   const handleMarkAsRead = () => {
-    console.log("clicked", item);
     markAsRead(item);
   };
   return (
