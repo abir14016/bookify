@@ -5,6 +5,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { IWishList } from "./WishList";
 import { faArrowRight, fas } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 
 const CompletedList = () => {
   library.add(fas);
@@ -23,28 +24,44 @@ const CompletedList = () => {
         </div>{" "}
         <span>items</span>
       </h3>
-      <div>
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                Book Name
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Added By
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Status
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {data?.data?.map((item: IWishList) => (
-              <CompletedListItem item={item} key={item._id} /> // Use CompletedListItem component
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {data?.data?.length ? (
+        <div>
+          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" className="px-6 py-3">
+                  Book Name
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Added By
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Status
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {data?.data?.map((item: IWishList) => (
+                <CompletedListItem item={item} key={item._id} />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <div className="flex justify-center items-center">
+          <div>
+            <h2 className="text-xl font-bold text-gray-500 mb-3">
+              No item found in your completed list
+            </h2>
+            <div>
+              <Link className="btn btn-primary btn-outline btn-md" to="/books">
+                <span className="mr-2">Please Add</span>
+                <FontAwesomeIcon icon={faArrowRight}></FontAwesomeIcon>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

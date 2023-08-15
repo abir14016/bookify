@@ -5,6 +5,7 @@ import { useAppSelector } from "../redux/hooks";
 import { IBook, ITag } from "../types/globalTypes";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import ListItemSkeleton from "../components/ListItemSkeleton";
 
 type IUser = {
   name: string;
@@ -20,7 +21,7 @@ export type IWishList = {
 
 const WishList = () => {
   const { accessToken } = useAppSelector((state) => state.auth);
-  const { data } = useGetMyWishListBooksQuery(accessToken);
+  const { data, isLoading } = useGetMyWishListBooksQuery(accessToken);
   return (
     <div>
       <h3 className="text-warning text-xl mb-3">
@@ -53,9 +54,13 @@ const WishList = () => {
               </tr>
             </thead>
             <tbody>
-              {data?.data?.map((item: IWishList) => (
-                <WishListItem item={item} key={item._id}></WishListItem>
-              ))}
+              {isLoading
+                ? Array.from({ length: 10 }).map((_, index) => (
+                    <ListItemSkeleton key={index} />
+                  ))
+                : data?.data?.map((item: IWishList) => (
+                    <WishListItem item={item} key={item._id}></WishListItem>
+                  ))}
             </tbody>
           </table>
         </div>
