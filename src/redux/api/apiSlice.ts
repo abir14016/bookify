@@ -136,6 +136,15 @@ export const api = createApi({
       }),
       invalidatesTags: ["wishlist"],
     }),
+
+    removeFromWishList: builder.mutation({
+      query: (wishListData) => ({
+        url: `/wishlist/remove-from-wishlist`,
+        method: "DELETE",
+        body: wishListData,
+      }),
+      invalidatesTags: ["wishlist"],
+    }),
   }),
 });
 
@@ -156,4 +165,5 @@ export const {
   useGetMyReadingListBooksQuery,
   useMarkASReadMutation,
   useGetMyCompletedListBooksQuery,
+  useRemoveFromWishListMutation,
 } = api;

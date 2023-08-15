@@ -1,6 +1,20 @@
+import { useEffect } from "react";
 import { IWishList } from "../pages/WishList";
+import { useRemoveFromWishListMutation } from "../redux/api/apiSlice";
+import swal from "sweetalert";
 
 const WishListItem = ({ item }: { item: IWishList }) => {
+  const [removeFromWishList, { isLoading, isError, error }] =
+    useRemoveFromWishListMutation();
+  useEffect(() => {
+    if (isError && error) {
+      swal("Ops !", "Failed to remove", "error");
+    }
+  }, [isError, error]);
+  //handler function for removing book from wishlist
+  const handleRemoveFromWishList = () => {
+    removeFromWishList(item);
+  };
   return (
     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
       <th
@@ -28,9 +42,18 @@ const WishListItem = ({ item }: { item: IWishList }) => {
         </div>
       </td>
       <td className="px-6 py-4">
-        <button className="btn btn-error lowercase font-semibold btn-xs">
-          Remove
-        </button>
+        {!isLoading ? (
+          <button
+            onClick={handleRemoveFromWishList}
+            className="btn btn-error lowercase font-semibold btn-xs"
+          >
+            Remove
+          </button>
+        ) : (
+          <button className="btn btn-error btn-xs">
+            <span className="loading text-accent loading-spinner loading-xs"></span>
+          </button>
+        )}
       </td>
     </tr>
   );
