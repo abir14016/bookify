@@ -1,27 +1,43 @@
-# React + TypeScript + Vite
+# React + TypeScript + Vite + Redux
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Book Catelog Project
 
-Currently, two official plugins are available:
+# API Documentation
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Live Server Link [backend]
 
-## Expanding the ESLint configuration
+[https://bookify-server-puxagxrg7-abir14016.vercel.app/](https://bookify-server-puxagxrg7-abir14016.vercel.app/)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Live Website Link [frontend]
 
-- Configure the top-level `parserOptions` property like this:
+[https://booki-fy.netlify.app/](https://booki-fy.netlify.app/)
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+## Application Routes
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### Auth (User)
+
+- Route: https://bookify-server-puxagxrg7-abir14016.vercel.app/api/v1/auth/signin (POST)
+- Route: https://bookify-server-puxagxrg7-abir14016.vercel.app/api/v1/auth/refresh-token (POST)
+
+### User
+
+- Route: https://bookify-server-puxagxrg7-abir14016.vercel.app/api/v1/users/signup (POST)
+
+#### Books
+
+- Route: https://bookify-server-puxagxrg7-abir14016.vercel.app/api/v1/books/create-book (POST)
+- Route: https://bookify-server-puxagxrg7-abir14016.vercel.app/api/v1/books (GET)
+- Route: https://bookify-server-puxagxrg7-abir14016.vercel.app/api/v1/books/64d1c68f5ad1977c2d7083d6 (Single GET)
+- Route: https://bookify-server-puxagxrg7-abir14016.vercel.app/api/v1/books/64d1c68f5ad1977c2d7083d6 (PATCH)
+- Route: https://bookify-server-puxagxrg7-abir14016.vercel.app/api/v1/books/review/64d1c68f5ad1977c2d7083d6 (PATCH)
+- Route: https://bookify-server-puxagxrg7-abir14016.vercel.app/api/v1/books/64d1c68f5ad1977c2d7083d6 (DELETE)
+
+#### Wishlist
+
+- Route: https://bookify-server-puxagxrg7-abir14016.vercel.app/api/v1/wishlist/add-to-wishlist (POST)
+- Route: https://bookify-server-puxagxrg7-abir14016.vercel.app/api/v1/wishlist/add-to-reading-list (POST)
+- Route: https://bookify-server-puxagxrg7-abir14016.vercel.app/api/v1/wishlist/my-wishlist (GET)
+- Route: https://bookify-server-puxagxrg7-abir14016.vercel.app/api/v1/wishlist/my-reading-list (GET)
+- Route: https://bookify-server-puxagxrg7-abir14016.vercel.app/api/v1/wishlist/my-completed-list (GET)
+- Route: https://bookify-server-puxagxrg7-abir14016.vercel.app/api/v1/wishlist/my-reading-list/mark-as-read (PATCH)
+- Route: https://bookify-server-puxagxrg7-abir14016.vercel.app/api/v1/wishlist/remove-from-wishlist (DELETE)
